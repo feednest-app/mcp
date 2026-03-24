@@ -1,0 +1,54 @@
+{
+  "name": "@feednest/sdk",
+  "version": "0.1.1",
+  "description": "TypeScript SDK for FeedNest. Full types, automatic pagination, and built-in retry. Build AI integrations on top of your curated sources.",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/feednest-app/mcp.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://www.feednest.com/integrations",
+  "keywords": [
+    "feednest",
+    "sdk",
+    "api",
+    "news",
+    "rss",
+    "mcp",
+    "ai"
+  ]
+}

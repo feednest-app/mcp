@@ -1,0 +1,14 @@
+{
+  "name": "feednest-mcp",
+  "private": true,
+  "description": "FeedNest MCP server client libraries — SDK, tool definitions, and OpenClaw plugin",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w packages/sdk && npm run build -w packages/shared-tool-defs && npm run build -w packages/openclaw-plugin",
+    "test": "npm run test -w packages/sdk && npm run test:run -w packages/shared-tool-defs && npm run test:run -w packages/openclaw-plugin",
+    "type-check": "npm run type-check -w packages/sdk && npm run type-check -w packages/shared-tool-defs && npm run type-check -w packages/openclaw-plugin"
+  },
+  "license": "MIT"
+}

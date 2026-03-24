@@ -1,0 +1,21 @@
+{
+  "name": "FeedNest",
+  "tagline": "Your sources inside your AI. Articles, highlights, notes, tags, and audio.",
+  "description": "ChatGPT searches the internet. Perplexity crawls billions of pages. FeedNest is different. Your AI works exclusively with the sources you choose: the blogs you trust, the publications you follow, the experts you believe in.\n\nThe OpenClaw plugin gives AI agents direct access to your articles, highlights, notes, and tags through natural language. 26 tools covering articles, feeds, folders, tags, highlights, notes, saving, and text-to-speech.\n\nRead-only tools enabled by default. Write and AI tools require explicit allowlisting.",
+  "category": "productivity",
+  "tags": [
+    "news",
+    "rss",
+    "ai",
+    "reading",
+    "highlights",
+    "notes",
+    "audio",
+    "feeds"
+  ],
+  "version": "0.1.1",
+  "license": "MIT",
+  "pricing": "free",
+  "support_url": "https://github.com/feednest-app/mcp/issues",
+  "homepage": "https://www.feednest.com/integrations"
+}

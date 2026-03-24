@@ -1,0 +1,25 @@
+{
+  "id": "feednest",
+  "name": "FeedNest",
+  "description": "Your sources inside your AI. Articles, highlights, notes, tags, and audio from the sources you trust.",
+  "version": "0.1.1",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "FeedNest API key (starts with fn_live_). Get one at feednest.com → Settings → Developer API."
+      }
+    },
+    "required": ["apiKey"]
+  },
+  "uiHints": {
+    "apiKey": {
+      "label": "FeedNest API Key",
+      "placeholder": "fn_live_...",
+      "sensitive": true
+    }
+  },
+  "skills": ["./skills/feednest"]
+}
