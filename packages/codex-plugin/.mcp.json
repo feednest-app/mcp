@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "feednest": {
+      "url": "https://mcp.feednest.com",
+      "headers": {
+        "Authorization": "Bearer ${FEEDNEST_API_KEY}"
+      }
+    }
+  }
+}

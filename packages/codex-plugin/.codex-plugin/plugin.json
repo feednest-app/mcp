@@ -1,0 +1,47 @@
+{
+  "name": "feednest",
+  "version": "0.1.0",
+  "description": "Your sources inside your AI. Articles, highlights, notes, tags, and audio from the sources you trust.",
+  "author": {
+    "name": "feednest-app",
+    "email": "support@feednest.com",
+    "url": "https://www.feednest.com"
+  },
+  "homepage": "https://www.feednest.com/integrations",
+  "repository": "https://github.com/feednest-app/mcp",
+  "license": "MIT",
+  "keywords": [
+    "news",
+    "rss",
+    "ai",
+    "reading",
+    "highlights",
+    "notes",
+    "audio",
+    "feeds",
+    "mcp-server",
+    "news-reader"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "FeedNest",
+    "shortDescription": "Your feeds inside your AI. Articles, highlights, notes, tags, and audio.",
+    "longDescription": "ChatGPT searches the internet. Perplexity crawls billions of pages. When you ask about your industry, your interests, your world, they give you everything except what matters.\n\nFeedNest is different. Your AI works exclusively with the sources you choose: the blogs you trust, the publications you follow, the experts you believe in. No algorithmic noise. No black-box results. Intelligence grounded in your world.\n\nThis plugin gives Codex direct access to your feeds, articles, highlights, notes, and tags through 26 tools — morning briefings, trend detection, cross-source comparison, reading stats, and text-to-speech.",
+    "developerName": "feednest-app",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://www.feednest.com",
+    "privacyPolicyURL": "https://www.feednest.com/privacy",
+    "termsOfServiceURL": "https://www.feednest.com/terms",
+    "defaultPrompt": [
+      "Give me a morning briefing from my feeds",
+      "What's happening in AI today?",
+      "Compare how different sources covered the latest story",
+      "Highlight the key findings in this article"
+    ],
+    "brandColor": "#ffbf69",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  }
+}

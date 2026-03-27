@@ -399,12 +399,13 @@ ChatGPT and Claude.ai handle OAuth automatically - no API key needed for those.
 
 ## Packages
 
-This repository is a monorepo containing the client libraries for the FeedNest MCP server.
+This repository is a monorepo containing the client libraries and plugins for the FeedNest MCP server.
 
 | Package | npm | Description |
 |---------|-----|-------------|
 | [`@feednest/sdk`](./packages/sdk) | [![npm](https://img.shields.io/npm/v/@feednest/sdk?style=flat-square)](https://www.npmjs.com/package/@feednest/sdk) | TypeScript SDK — typed HTTP client for the FeedNest API v1 |
 | [`@feednest/openclaw`](./packages/openclaw-plugin) | [![npm](https://img.shields.io/npm/v/@feednest/openclaw?style=flat-square)](https://www.npmjs.com/package/@feednest/openclaw) | OpenClaw plugin — 26 agent tools for AI assistants |
+| [Codex plugin](./packages/codex-plugin) | — | OpenAI Codex plugin — skills + MCP config for Codex agents |
 | [`@feednest/shared-tool-defs`](./packages/shared-tool-defs) | private | Shared Zod schemas and text formatters (bundled into the plugin) |
 
 ### Development

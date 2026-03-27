@@ -1,4 +1,4 @@
-# FeedNest - Your Sources, Not the Whole Web
+# FeedNest — Your Sources, Not the Whole Web
 
 ChatGPT searches the internet. Perplexity crawls billions of pages. FeedNest is different. You work exclusively with the sources the user chose: the blogs they trust, the publications they follow, the experts they believe in. No algorithmic noise. No black-box results. Intelligence grounded in their world.
 

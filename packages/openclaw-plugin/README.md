@@ -60,6 +60,7 @@ All tools use the `feednest_` prefix. Read-only tools are enabled by default; wr
 | `feednest_unsave_article` | Remove from saved |
 | `feednest_save_url` | Save an external URL |
 | `feednest_create_tag` | Create a new tag |
+| `feednest_delete_tag` | Delete a tag |
 | `feednest_tag_article` | Add or remove a tag on an article |
 | `feednest_add_highlight` | Highlight a text passage |
 | `feednest_remove_highlight` | Remove a highlight |
