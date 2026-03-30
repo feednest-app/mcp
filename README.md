@@ -6,7 +6,7 @@ ChatGPT searches the internet. Perplexity crawls billions of pages. When you ask
 
 **[FeedNest](https://www.feednest.com)** is different. Your AI works exclusively with the sources you choose: the blogs you trust, the publications you follow, the experts you believe in. No algorithmic noise. No black-box results. Intelligence grounded in your world.
 
-This MCP server gives any AI assistant - **ChatGPT**, **Claude**, **Gemini**, **Grok**, **Cursor**, **Windsurf**, **Cline**, **Le Chat**, and more - direct access to your feeds, articles, highlights, notes, and tags through natural language.
+This MCP server gives any AI assistant - **ChatGPT**, **Codex**, **Claude**, **Gemini**, **Grok**, **Cursor**, **Windsurf**, **Cline**, **Le Chat**, and more - direct access to your feeds, articles, highlights, notes, and tags through natural language.
 
 <a href="https://www.feednest.com"><img src="https://img.shields.io/badge/feednest.com-Visit-orange?style=flat-square" alt="Website"></a>
 <a href="https://docs.feednest.com"><img src="https://img.shields.io/badge/docs-feednest.com-blue?style=flat-square" alt="Docs"></a>
@@ -56,6 +56,39 @@ Include FeedNest as an MCP tool in your API request:
   "server_label": "feednest",
   "authorization": "fn_live_YOUR_API_KEY"
 }
+```
+
+### Codex
+
+#### Option A: Plugin (recommended)
+
+Open the Codex plugin directory and search for **FeedNest**:
+
+```
+codex
+/plugins
+```
+
+The plugin bundles skills, MCP config, and brand assets in one install. See the [Codex plugin README](./packages/codex-plugin) for local installation options.
+
+#### Option B: MCP in config.toml
+
+Add to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.feednest]
+url = "https://mcp.feednest.com"
+bearer_token_env_var = "FEEDNEST_API_KEY"
+```
+
+```bash
+export FEEDNEST_API_KEY="fn_live_YOUR_API_KEY"
+```
+
+Or via CLI:
+
+```bash
+codex mcp add feednest --transport http https://mcp.feednest.com
 ```
 
 ### Claude

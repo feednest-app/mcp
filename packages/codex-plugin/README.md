@@ -72,7 +72,7 @@ Add to `~/.agents/plugins/marketplace.json`:
       "name": "feednest",
       "source": {
         "source": "local",
-        "path": "./feednest"
+        "path": "./.codex/plugins/feednest"
       },
       "policy": {
         "installation": "AVAILABLE",

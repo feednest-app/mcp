@@ -1,0 +1,18 @@
+interface:
+  display_name: "FeedNest"
+  short_description: "Read, search, highlight, and organize news from your RSS feeds."
+  icon_small: "../../assets/logo.svg"
+  icon_large: "../../assets/logo.png"
+  brand_color: "#ffbf69"
+  default_prompt: "Give me a morning briefing from my feeds"
+
+policy:
+  allow_implicit_invocation: true
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "feednest"
+      description: "FeedNest MCP server — articles, highlights, notes, tags, and audio"
+      transport: "streamable_http"
+      url: "https://mcp.feednest.com"
