@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+### Fixed
+
+- `formatArticleList` (via the bundled `@feednest/shared-tool-defs@0.1.1`) now exposes ISO `published_at` per article. Lets agents paginate reliably through large folders and feeds using the keyset cursor.
+
 ## 0.1.1
 
 ### Fixed
