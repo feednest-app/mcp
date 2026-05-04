@@ -103,7 +103,13 @@ export function formatArticleList(articles: ArticleV1[]): string {
       const suffix =
         annotations.length > 0 ? ` [${annotations.join(" | ")}]` : "";
       const preview = a.summary_preview ? `\n   ${a.summary_preview}` : "";
-      return `${i + 1}. ${status} ${title} — ${source} (${date})${suffix}\n   id: ${a.id}${preview}`;
+      // Expose the ISO published_at so MCP clients can build the keyset cursor
+      // (before_id + before_published_at). Relative time is kept above for
+      // natural conversation, but the API requires the exact timestamp.
+      const publishedLine = a.published_at
+        ? `\n   published_at: ${a.published_at}`
+        : "";
+      return `${i + 1}. ${status} ${title} — ${source} (${date})${suffix}\n   id: ${a.id}${publishedLine}${preview}`;
     })
     .join("\n");
 }

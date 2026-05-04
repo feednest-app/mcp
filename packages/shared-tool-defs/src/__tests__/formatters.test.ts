@@ -170,6 +170,18 @@ describe("formatArticleList", () => {
     expect(result).toContain("A guide to building...");
   });
 
+  it("exposes ISO published_at so clients can build the keyset cursor", () => {
+    const fixedIso = "2026-05-01T18:32:14.000Z";
+    const result = formatArticleList([{ ...article, published_at: fixedIso }]);
+    expect(result).toContain(`published_at: ${fixedIso}`);
+  });
+
+  it("omits published_at line when the article has no timestamp", () => {
+    const result = formatArticleList([{ ...article, published_at: null }]);
+    expect(result).not.toContain("published_at:");
+    expect(result).toContain("unknown date");
+  });
+
   it("returns empty message for empty list", () => {
     expect(formatArticleList([])).toBe("No articles found.");
   });
