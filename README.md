@@ -10,6 +10,7 @@ This MCP server gives any AI assistant - **ChatGPT**, **Codex**, **Claude**, **G
 
 <a href="https://www.feednest.com"><img src="https://img.shields.io/badge/feednest.com-Visit-orange?style=flat-square" alt="Website"></a>
 <a href="https://docs.feednest.com"><img src="https://img.shields.io/badge/docs-feednest.com-blue?style=flat-square" alt="Docs"></a>
+<a href="https://smithery.ai/servers/feednest/feednest"><img src="https://img.shields.io/badge/smithery-feednest-purple?style=flat-square" alt="Smithery"></a>
 
 ---
 
