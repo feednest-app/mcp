@@ -152,6 +152,21 @@ describe("tool definitions", () => {
     }
   });
 
+  it("only the tools that fetch a caller-chosen URL are open-world", () => {
+    // `openWorldHint` defaults to true in the MCP spec, so every `false` here
+    // is an explicit claim that the tool never leaves the user's own account
+    // data. Asserted in both directions: a new URL-fetching tool that inherits
+    // a closed-world preset fails this test instead of shipping a wrong hint
+    // to the ChatGPT app directory.
+    const openWorldNames = new Set(["extract_article", "save_url"]);
+    for (const tool of tools) {
+      expect(
+        tool.annotations.openWorldHint,
+        `${tool.name} openWorldHint should be ${openWorldNames.has(tool.name)}`
+      ).toBe(openWorldNames.has(tool.name));
+    }
+  });
+
   it("destructive tools have destructiveHint: true", () => {
     const destructiveNames = ["delete_tag", "remove_highlight", "delete_note"];
     for (const name of destructiveNames) {
@@ -209,15 +224,6 @@ describe("tool definitions", () => {
         tool?.annotations.idempotentHint,
         `${name} should NOT be idempotent`
       ).toBeFalsy();
-    }
-  });
-
-  it("no tool has openWorldHint: true", () => {
-    for (const tool of tools) {
-      expect(
-        tool.annotations.openWorldHint,
-        `${tool.name} should be closed-world`
-      ).toBe(false);
     }
   });
 

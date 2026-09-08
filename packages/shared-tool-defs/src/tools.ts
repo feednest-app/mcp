@@ -126,7 +126,18 @@ const recentlyReadParams = z.object({
 });
 
 // ---------------------------------------------------------------------------
-// Annotation presets (all FeedNest tools are closed-world — no public writes)
+// Annotation presets
+//
+// `openWorldHint` carries the MCP meaning: true when a tool may interact with
+// an open world of external entities, false when its domain of interaction is
+// closed. The spec defaults it to true, so `false` is an explicit claim about
+// behaviour, and app-directory reviewers check that claim against what the
+// tool really does.
+//
+// Almost every FeedNest tool only reads or writes the caller's own account
+// data, which is a closed domain. Two tools are different: they fetch a URL
+// the caller chooses. `extract_article` re-fetches the publisher's page and
+// `save_url` fetches an arbitrary address, so both reach an open world.
 // ---------------------------------------------------------------------------
 
 const READ_ONLY: ToolAnnotations = {
@@ -142,10 +153,25 @@ const WRITE: ToolAnnotations = {
   openWorldHint: false,
 };
 
+/** Write that fetches a caller-supplied URL from the public internet. */
+const WRITE_OPEN_WORLD: ToolAnnotations = {
+  readOnlyHint: false,
+  destructiveHint: false,
+  openWorldHint: true,
+};
+
 const WRITE_IDEMPOTENT: ToolAnnotations = {
   readOnlyHint: false,
   destructiveHint: false,
   openWorldHint: false,
+  idempotentHint: true,
+};
+
+/** Idempotent write that re-fetches the article's origin URL. */
+const WRITE_IDEMPOTENT_OPEN_WORLD: ToolAnnotations = {
+  readOnlyHint: false,
+  destructiveHint: false,
+  openWorldHint: true,
   idempotentHint: true,
 };
 
@@ -196,7 +222,7 @@ export const tools: ToolDefinition[] = [
     parameters: z.object({
       article_id: z.string().describe("The article ID to extract content for."),
     }),
-    annotations: WRITE_IDEMPOTENT,
+    annotations: WRITE_IDEMPOTENT_OPEN_WORLD,
     invocationText: {
       invoking: "Extracting content…",
       invoked: "Content extracted",
@@ -280,7 +306,7 @@ export const tools: ToolDefinition[] = [
     parameters: z.object({
       url: z.string().url().describe("The URL to save."),
     }),
-    annotations: WRITE,
+    annotations: WRITE_OPEN_WORLD,
     invocationText: { invoking: "Saving URL…", invoked: "URL saved" },
   },
   {

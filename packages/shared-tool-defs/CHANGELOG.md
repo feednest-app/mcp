@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.2
+
+### Fixed
+
+- `extract_article` and `save_url` now declare `openWorldHint: true`. Both fetch
+  a URL the caller chooses (the publisher's page and an arbitrary address), so
+  the previous closed-world hint misdescribed them. Every other tool stays
+  closed-world and a test now pins both directions.
+
 ## 0.1.1
 
 ### Fixed
