@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.3
+
+### Changed
+
+- Tool descriptions are purely descriptive. `get_article` and
+  `extract_article` no longer point at each other, `mark_all_as_read` no
+  longer tells the model to ask for confirmation, and `get_articles` /
+  `get_feeds` describe their parameters instead of coaching their use. The
+  Claude connectors directory requires descriptions with no instructions about
+  model behavior or other tools; cross-tool workflow lives in the MCP server's
+  `instructions`. A test now pins this for every tool.
+- `mark_all_as_read` is annotated destructive. It rewrites the read state of
+  every matching article with no bulk undo, so clients should confirm before
+  running it.
+
 ## 0.1.2
 
 ### Fixed

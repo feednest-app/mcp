@@ -194,7 +194,7 @@ export const tools: ToolDefinition[] = [
     description:
       "List articles with title, source, date, and summary preview. " +
       "Views: newsfeed, by-feed, by-folder, by-tag, tagged, highlighted, noted. " +
-      "Use count_only=true to check volume before loading full lists.",
+      "count_only returns only the number of matching articles.",
     parameters: articleListParams,
     annotations: READ_ONLY,
     invocationText: {
@@ -206,8 +206,8 @@ export const tools: ToolDefinition[] = [
     name: "get_article",
     title: "Read article",
     description:
-      "Get full article content, highlights, notes, and reading time. " +
-      "If content is truncated (<1 min read), use extract_article to fetch the full text.",
+      "Get an article's content from its RSS feed, with its highlights, notes, " +
+      "and estimated reading time. Some feeds publish only an excerpt.",
     parameters: z.object({
       article_id: z.string().describe("The article ID."),
     }),
@@ -218,7 +218,7 @@ export const tools: ToolDefinition[] = [
     name: "extract_article",
     title: "Extract full content",
     description:
-      "Fetch full article content from the original URL. Only needed when get_article returns truncated content.",
+      "Fetch the full text of an article from the publisher's original page, for feeds that publish only an excerpt.",
     parameters: z.object({
       article_id: z.string().describe("The article ID to extract content for."),
     }),
@@ -257,7 +257,7 @@ export const tools: ToolDefinition[] = [
     name: "mark_all_as_read",
     title: "Mark all as read",
     description:
-      "Mark all articles as read. Optionally filter by feed or folder. Ask for confirmation first.",
+      "Mark all articles as read, optionally limited to one feed or folder.",
     parameters: z.object({
       feed_id: z
         .string()
@@ -268,7 +268,9 @@ export const tools: ToolDefinition[] = [
         .optional()
         .describe("Only mark articles from this folder."),
     }),
-    annotations: WRITE_IDEMPOTENT,
+    // Destructive: it rewrites the read state of every matching article and
+    // there is no bulk undo. The hint lets clients confirm before running it.
+    annotations: DESTRUCTIVE_IDEMPOTENT,
     invocationText: {
       invoking: "Updating articles…",
       invoked: "All marked as read",
@@ -353,8 +355,8 @@ export const tools: ToolDefinition[] = [
     name: "get_feeds",
     title: "List feeds",
     description:
-      "List subscribed feeds with unread counts. Use query to search by name. " +
-      "Optionally filter by folder.",
+      "List subscribed feeds with unread counts, optionally filtered by name " +
+      "or folder.",
     parameters: z.object({
       folder_id: z.string().optional().describe("Only feeds in this folder."),
       query: z.string().optional().describe("Search feeds by name."),

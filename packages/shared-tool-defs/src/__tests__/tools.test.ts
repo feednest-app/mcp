@@ -167,8 +167,54 @@ describe("tool definitions", () => {
     }
   });
 
-  it("destructive tools have destructiveHint: true", () => {
-    const destructiveNames = ["delete_tag", "remove_highlight", "delete_note"];
+  it("only deletions and bulk read-state changes are destructive", () => {
+    // Asserted in both directions: a new tool that destroys data but inherits
+    // a plain write preset fails here instead of skipping client confirmation.
+    const destructiveNames = new Set([
+      "delete_tag",
+      "remove_highlight",
+      "delete_note",
+      "mark_all_as_read",
+    ]);
+    for (const tool of tools) {
+      expect(
+        tool.annotations.destructiveHint,
+        `${tool.name} destructiveHint should be ${destructiveNames.has(tool.name)}`
+      ).toBe(destructiveNames.has(tool.name));
+    }
+  });
+
+  it("descriptions never point at other tools or tell the model what to do", () => {
+    // The Claude connectors directory requires descriptions with no
+    // instructions about model behavior or other tools. Workflow between
+    // tools belongs in the server's `instructions` field instead.
+    const names = tools.map((t) => t.name);
+    for (const tool of tools) {
+      for (const other of names) {
+        if (other === tool.name) {
+          continue;
+        }
+        expect(
+          new RegExp(`\\b${other}\\b`).test(tool.description),
+          `${tool.name} description mentions ${other}`
+        ).toBe(false);
+      }
+      expect(
+        /ask for confirmation|only needed when|\buse [a-z]+_[a-z_]+/i.test(
+          tool.description
+        ),
+        `${tool.name} description instructs the model`
+      ).toBe(false);
+    }
+  });
+
+  it("destructive tools are never read-only", () => {
+    const destructiveNames = [
+      "delete_tag",
+      "remove_highlight",
+      "delete_note",
+      "mark_all_as_read",
+    ];
     for (const name of destructiveNames) {
       const tool = getToolByName(name);
       expect(
