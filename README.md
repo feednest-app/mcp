@@ -25,7 +25,6 @@ Just ask. Your AI handles the rest.
 - **Track developing stories** - Follow a narrative as it evolves across all your feeds
 - **Instant search** - Find any article across all your sources in seconds
 - **Highlights and notes** - Save what matters and annotate with your own thoughts
-- **Audio briefings** - Turn any article or summary into something you can listen to
 
 ---
 
@@ -265,7 +264,7 @@ For stdio-only clients, use the [mcp-remote](https://github.com/geelen/mcp-remot
 
 ---
 
-## Tools (26)
+## Tools (25)
 
 ### Articles
 
@@ -338,9 +337,9 @@ For stdio-only clients, use the [mcp-remote](https://github.com/geelen/mcp-remot
 
 ### AI
 
-| Tool | Description | Key Parameters |
-|------|-------------|----------------|
-| `text_to_speech` | Generate audio from an article using text-to-speech. | `article_id`\* |
+`text_to_speech` is not exposed by the hosted MCP server: it generates audio with
+an AI model, which the Claude connectors directory does not allow. Reading articles
+aloud stays available in the FeedNest app and through the OpenClaw plugin.
 
 ### Stats
 
@@ -404,7 +403,7 @@ ChatGPT and Claude.ai handle OAuth automatically - no API key needed for those.
 |-------|--------|
 | `read` | All read-only tools (get_articles, get_feeds, get_stats, etc.) |
 | `write` | All mutation tools (mark_as_read, save_article, add_highlight, etc.) |
-| `ai` | AI tools (text_to_speech) |
+| `ai` | No MCP tool at the moment (see AI above) |
 
 ---
 

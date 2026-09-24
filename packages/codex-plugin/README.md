@@ -6,7 +6,7 @@ ChatGPT searches the internet. Perplexity crawls billions of pages. When you ask
 
 **[FeedNest](https://www.feednest.com)** is different. Your AI works exclusively with the sources you choose: the blogs you trust, the publications you follow, the experts you believe in. No algorithmic noise. No black-box results. Intelligence grounded in your world.
 
-This Codex plugin gives your agent direct access to your feeds, articles, highlights, notes, and tags through 26 tools.
+This Codex plugin gives your agent direct access to your feeds, articles, highlights, notes, and tags through 25 tools.
 
 ## Prerequisites
 
@@ -103,9 +103,8 @@ The plugin's MCP config reads `FEEDNEST_API_KEY` from the environment to authent
 - **Track developing stories** — follow a narrative as it evolves
 - **Instant search** — find any article across all your sources
 - **Highlights and notes** — save what matters and annotate with your thoughts
-- **Audio briefings** — turn any article into something you can listen to
 
-## Tools (26)
+## Tools (25)
 
 ### Reading (always available)
 
@@ -144,9 +143,9 @@ The plugin's MCP config reads `FEEDNEST_API_KEY` from the environment to authent
 
 ### AI
 
-| Tool | Description |
-|------|-------------|
-| `text_to_speech` | Generate audio from an article |
+`text_to_speech` is not exposed by the hosted MCP server: it generates audio with
+an AI model, which the Claude connectors directory does not allow. Reading articles
+aloud stays available in the FeedNest app and through the OpenClaw plugin.
 
 ## Example Prompts
 

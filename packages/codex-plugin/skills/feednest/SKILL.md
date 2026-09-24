@@ -87,12 +87,6 @@ The user also needs a [FeedNest](https://www.feednest.com) account with a Pro su
 | "My reading stats" | `get_stats` |
 | "My output feeds" | `get_output_feeds` |
 
-### AI
-
-| Intent | Tool |
-|--------|------|
-| "Read this article aloud" | `text_to_speech` |
-
 ## Best Practices
 
 1. **Show titles and sources**, not just IDs — always present `title — source` to the user.
