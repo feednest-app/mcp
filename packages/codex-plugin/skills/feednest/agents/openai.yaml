@@ -13,6 +13,6 @@ dependencies:
   tools:
     - type: "mcp"
       value: "feednest"
-      description: "FeedNest MCP server — articles, highlights, notes, tags, and audio"
+      description: "FeedNest MCP server: articles, highlights, notes, and tags"
       transport: "streamable_http"
       url: "https://mcp.feednest.com"

@@ -62,14 +62,7 @@ Include FeedNest as an MCP tool in your API request:
 
 #### Option A: Plugin (recommended)
 
-Open the Codex plugin directory and search for **FeedNest**:
-
-```
-codex
-/plugins
-```
-
-The plugin bundles skills, MCP config, and brand assets in one install. See the [Codex plugin README](./packages/codex-plugin) for local installation options.
+The plugin bundles skills, MCP config, and brand assets in one install. It is not in the Codex plugin directory yet, so install it from this repository: see [Local Installation](./packages/codex-plugin#local-installation) in the Codex plugin README.
 
 #### Option B: MCP in config.toml
 
@@ -93,11 +86,16 @@ codex mcp add feednest --transport http https://mcp.feednest.com
 
 ### Claude
 
-#### Claude.ai Web (OAuth - recommended)
+#### Connectors directory (OAuth - recommended)
 
-1. Click profile icon → **Settings → Connectors → Add custom connector**
-2. Set **Name** to `FeedNest`, **Remote MCP server URL** to `https://mcp.feednest.com`
-3. Leave OAuth Client ID and Secret empty. Click **Add** and authorize.
+FeedNest is listed in Claude's connectors directory.
+
+1. Open [claude.ai/directory/feednest](https://claude.ai/directory/feednest), or search for **FeedNest** in **Customize → Connectors**
+2. Click **Connect to Claude**, log in to FeedNest, and authorize
+
+No API key needed, and the connector follows your Claude account to Claude Desktop and the mobile apps.
+
+To add it by URL instead, add a custom connector in **Customize → Connectors** with the URL `https://mcp.feednest.com` and leave OAuth Client ID and Secret empty.
 
 #### Claude Code
 
@@ -108,9 +106,9 @@ claude mcp add --transport http feednest https://mcp.feednest.com \
 
 Add `-s user` for global access across all projects.
 
-#### Claude Desktop (requires bridge)
+#### Claude Desktop config file (requires bridge)
 
-Claude Desktop only supports stdio-based servers. Use the `mcp-remote` bridge:
+The directory connector above already works in Claude Desktop. To configure FeedNest in `claude_desktop_config.json` instead, which only runs stdio servers, use the `mcp-remote` bridge:
 
 ```json
 {
@@ -373,7 +371,6 @@ Want me to summarize any of them?"
 - *"Save this article and highlight the key findings"*
 - *"Tag all AI-related articles with 'Machine Learning'"*
 - *"How's my reading streak going?"*
-- *"Turn this article into audio"*
 
 ---
 

@@ -7,7 +7,7 @@ description: Read, search, highlight, and organize news from the user's RSS feed
 
 ChatGPT searches the internet. Perplexity crawls billions of pages. FeedNest is different. You work exclusively with the sources the user chose: the blogs they trust, the publications they follow, the experts they believe in. No algorithmic noise. No black-box results. Intelligence grounded in their world.
 
-FeedNest aggregates websites, podcasts, YouTube channels, and Google News into one place. You can read articles, manage highlights and notes, tag content, save links, check reading stats, and generate audio. Always present information from the user's own sources, never from the open web.
+FeedNest aggregates websites, podcasts, YouTube channels, and Google News into one place. You can read articles, manage highlights and notes, tag content, save links, and check reading stats. Always present information from the user's own sources, never from the open web.
 
 ## Requirements
 

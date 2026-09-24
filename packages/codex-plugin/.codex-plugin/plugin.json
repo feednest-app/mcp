@@ -1,7 +1,7 @@
 {
   "name": "feednest",
-  "version": "0.1.1",
-  "description": "Your sources inside your AI. Articles, highlights, notes, tags, and audio from the sources you trust.",
+  "version": "0.1.2",
+  "description": "Your sources inside your AI. Articles, highlights, notes, and tags from the sources you trust.",
   "author": {
     "name": "feednest-app",
     "email": "support@feednest.com",
@@ -17,7 +17,6 @@
     "reading",
     "highlights",
     "notes",
-    "audio",
     "feeds",
     "mcp-server",
     "news-reader"
@@ -26,7 +25,7 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "FeedNest",
-    "shortDescription": "Your feeds inside your AI. Articles, highlights, notes, tags, and audio.",
+    "shortDescription": "Your feeds inside your AI. Articles, highlights, notes, and tags.",
     "longDescription": "ChatGPT searches the internet. Perplexity crawls billions of pages. When you ask about your industry, your interests, your world, they give you everything except what matters.\n\nFeedNest is different. Your AI works exclusively with the sources you choose: the blogs you trust, the publications you follow, the experts you believe in. No algorithmic noise. No black-box results. Intelligence grounded in your world.\n\nThis plugin gives Codex direct access to your feeds, articles, highlights, notes, and tags through 25 tools: morning briefings, trend detection, cross-source comparison, and reading stats.",
     "developerName": "feednest-app",
     "category": "Productivity",

@@ -15,14 +15,7 @@ This Codex plugin gives your agent direct access to your feeds, articles, highli
 
 ## Installation
 
-### From the Plugin Directory
-
-Open the Codex plugin directory and search for **FeedNest**:
-
-```
-codex
-/plugins
-```
+FeedNest is not in the Codex plugin directory yet. Until it is, install the plugin locally.
 
 ### Local Installation
 

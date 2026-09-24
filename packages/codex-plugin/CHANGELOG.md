@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.2
+
+### Changed
+
+- The manifest description, short description, and keywords, the skill, and
+  the MCP dependency description no longer mention audio. 0.1.1 removed the
+  tool but left these claims behind.
+- The README no longer sends users to the Codex plugin directory, where
+  FeedNest is not listed yet. Local installation is the way in until it is.
+
 ## 0.1.1
 
 ### Changed
