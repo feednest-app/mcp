@@ -32,8 +32,8 @@ Just ask. Your AI handles the rest.
 
 ### Prerequisites
 
-1. A [FeedNest](https://www.feednest.com) account with a **Pro** subscription
-2. An API key - generate one from **Settings → Developer API** in your dashboard
+1. A [FeedNest](https://www.feednest.com) account. Apps that connect with OAuth (ChatGPT, Claude) work on every plan: on Free they can read your feeds and articles, up to 20 requests an hour; Plus and Pro also let them save, tag, highlight, take notes and mark articles as read.
+2. For clients set up with an API key: a key from **Settings → Developer API**, which needs a **Pro** subscription
 
 ### ChatGPT
 
@@ -394,6 +394,22 @@ https://mcp.feednest.com/.well-known/oauth-protected-resource
 
 ChatGPT and Claude.ai handle OAuth automatically - no API key needed for those.
 
+### Plans
+
+Apps that connect with OAuth work on every FeedNest plan. API keys need Pro.
+
+| | Free | Plus | Pro |
+|---|---|---|---|
+| Read feeds, folders, articles, saved articles, tags, reading history and output feeds | Yes | Yes | Yes |
+| An article's highlights | Yes | Yes | Yes |
+| Notes, the `highlighted` and `noted` views, reading statistics | No | Yes | Yes |
+| Changes: mark as read, save, tag, highlight, take notes, load an article's full text | No | Yes | Yes |
+| Date filters (`date_from`, `date_to`, `since`) | No | No | Yes |
+| Requests an hour | 20 tool calls | 1,000 | 1,000 |
+| API keys | No | No | Yes |
+
+A connected app picks up a plan change at its next token refresh, within an hour, or right away when you reconnect FeedNest.
+
 ### Scopes
 
 | Scope | Access |
@@ -408,7 +424,7 @@ ChatGPT and Claude.ai handle OAuth automatically - no API key needed for those.
 
 - **You choose what's visible** - Pick exactly which feeds, folders, and actions your AI can access
 - **Encrypted and verified** - Every request is secured so no one else can reach your data
-- **Built-in usage limits** - 1,000 requests/hour per key, your account stays protected
+- **Built-in usage limits** - 1,000 requests an hour (20 tool calls on Free), so your account stays protected
 - **Revoke access instantly** - One click from your dashboard
 
 ---
@@ -420,7 +436,10 @@ ChatGPT and Claude.ai handle OAuth automatically - no API key needed for those.
 | "Bearer token required" | Check that the `Authorization` header is set correctly |
 | "Invalid API key format" | Key must start with `fn_live_` followed by 32 hex characters |
 | "Invalid or revoked API key" | Regenerate from Settings → Developer API |
-| "API access requires a Pro subscription" | Upgrade to Pro at [feednest.com](https://www.feednest.com) |
+| "API access requires a Pro subscription" | API keys need Pro. Upgrade at [feednest.com](https://www.feednest.com/#pricing), or connect with OAuth, which works on every plan |
+| "...included in FeedNest Plus and Pro" | The account is on the Free plan, where apps can read feeds, articles, saved articles, tags and highlights but not change anything. After upgrading, reconnect FeedNest so the app gets the new plan. See [Plans](#plans) |
+| "Filtering by date is included in FeedNest Pro" | Date filters need Pro. Without them, articles still come newest first |
+| "...includes 20 requests an hour from AI assistants" | The Free plan's hourly allowance is used up. Try again after the wait the message gives |
 | "Rate limit reached" | Wait a few minutes and retry |
 | "Insufficient scope" | Your API key doesn't have the required scope |
 | Tools not appearing | Restart your AI client after changing MCP configuration |

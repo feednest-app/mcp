@@ -110,7 +110,7 @@ Add tool names or the plugin ID to your agent's `allow` list:
 |-------|----------|
 | "API key is required" | Add `apiKey` to your OpenClaw feednest plugin config |
 | "Authentication failed" | Check that your API key is valid and starts with `fn_live_` |
-| "This feature requires a FeedNest Pro subscription" | Upgrade to Pro at feednest.com/pricing |
+| "This feature requires a FeedNest Pro subscription" | Upgrade to Pro at [feednest.com](https://www.feednest.com/#pricing) |
 | "Too many requests" | Wait a moment — rate limit is 1,000 requests/hour |
 
 ## Links
