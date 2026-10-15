@@ -15,9 +15,13 @@ import { fileURLToPath } from "node:url";
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const pluginRoot = join(repoRoot, "packages/codex-plugin");
 
-execFileSync(process.execPath, [join(repoRoot, "scripts/validate-codex-plugin.mjs")], {
-  stdio: "inherit",
-});
+execFileSync(
+  process.execPath,
+  [join(repoRoot, "scripts/validate-codex-plugin.mjs")],
+  {
+    stdio: "inherit",
+  }
+);
 
 const { version } = JSON.parse(
   readFileSync(join(pluginRoot, ".codex-plugin/plugin.json"), "utf8")
@@ -28,10 +32,14 @@ mkdirSync(outDir, { recursive: true });
 rmSync(zipPath, { force: true });
 
 // -X drops extra file attributes; macOS metadata never belongs in the upload.
-execFileSync("zip", ["-r", "-X", "-q", zipPath, ".", "-x", "*.DS_Store", "__MACOSX/*"], {
-  cwd: pluginRoot,
-  stdio: "inherit",
-});
+execFileSync(
+  "zip",
+  ["-r", "-X", "-q", zipPath, ".", "-x", "*.DS_Store", "__MACOSX/*"],
+  {
+    cwd: pluginRoot,
+    stdio: "inherit",
+  }
+);
 
 const listing = execFileSync("unzip", ["-Z1", zipPath], { encoding: "utf8" });
 console.log(listing.trim());

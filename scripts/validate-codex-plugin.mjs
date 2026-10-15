@@ -84,10 +84,17 @@ function pngSize(path) {
  */
 function svgSize(path) {
   const tag = readFileSync(path, "utf8").match(/<svg\b[^>]*>/i)?.[0] ?? "";
-  const attribute = (name) => tag.match(new RegExp(`\\s${name}="([^"]*)"`, "i"))?.[1];
+  const attribute = (name) =>
+    tag.match(new RegExp(`\\s${name}="([^"]*)"`, "i"))?.[1];
   const numeric = (value) =>
-    value && /^\d+(\.\d+)?(px)?$/.test(value.trim()) ? Number.parseFloat(value) : null;
-  const box = attribute("viewBox")?.trim().split(/[\s,]+/).map(Number) ?? [];
+    value && /^\d+(\.\d+)?(px)?$/.test(value.trim())
+      ? Number.parseFloat(value)
+      : null;
+  const box =
+    attribute("viewBox")
+      ?.trim()
+      .split(/[\s,]+/)
+      .map(Number) ?? [];
   return {
     width: numeric(attribute("width")),
     height: numeric(attribute("height")),
@@ -100,14 +107,18 @@ function svgSize(path) {
 function luminance(hex) {
   const [red, green, blue] = [1, 3, 5].map((start) => {
     const channel = Number.parseInt(hex.slice(start, start + 2), 16) / 255;
-    return channel <= 0.040_45 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    return channel <= 0.040_45
+      ? channel / 12.92
+      : ((channel + 0.055) / 1.055) ** 2.4;
   });
   return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
 }
 
 /** WCAG contrast ratio between two #RRGGBB colors, from 1 to 21. */
 export function contrastRatio(first, second) {
-  const [lighter, darker] = [luminance(first), luminance(second)].sort((a, b) => b - a);
+  const [lighter, darker] = [luminance(first), luminance(second)].sort(
+    (a, b) => b - a
+  );
   return (lighter + 0.05) / (darker + 0.05);
 }
 
@@ -156,18 +167,55 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
     }
   };
 
-  const checkAsset = (label, relativePath) => {
+  /** Resolve a ./ path inside the plugin, or record why it cannot be used. */
+  const resolveAsset = (label, relativePath) => {
     if (
       typeof relativePath !== "string" ||
       !relativePath.startsWith("./") ||
       relativePath.split("/").includes("..")
     ) {
       fail(`${label} must be a ./ path inside the plugin`);
-      return;
+      return null;
     }
     const path = join(pluginRoot, relativePath);
     if (!existsSync(path)) {
       fail(`${label} points to ${relativePath}, which does not exist`);
+      return null;
+    }
+    return path;
+  };
+
+  const checkPngSize = (label, path) => {
+    const size = pngSize(path);
+    if (!size) {
+      return;
+    }
+    if (size.width !== size.height) {
+      fail(`${label} must be square, it is ${size.width}x${size.height}`);
+    }
+    if (size.width < 48) {
+      fail(`${label} must be at least 48 by 48 pixels`);
+    }
+    if (size.width > 4096) {
+      fail(`${label} must be at most 4096 pixels a side`);
+    }
+  };
+
+  const checkSvgSize = (label, path) => {
+    const { width, height, boxWidth, boxHeight } = svgSize(path);
+    const squareSize = width !== null && width === height && width >= 48;
+    const squareBox =
+      boxWidth !== null && boxWidth === boxHeight && boxWidth >= 48;
+    if (!(squareSize || squareBox)) {
+      fail(
+        `${label} needs square numeric dimensions or a square viewBox of at least 48 by 48`
+      );
+    }
+  };
+
+  const checkAsset = (label, relativePath) => {
+    const path = resolveAsset(label, relativePath);
+    if (!path) {
       return;
     }
     if (!/\.(png|jpe?g|webp|svg)$/i.test(path)) {
@@ -176,25 +224,10 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
     if (statSync(path).size > MAX_ASSET_BYTES) {
       fail(`${label} is larger than 5 MiB`);
     }
-    const size = /\.png$/i.test(path) ? pngSize(path) : null;
-    if (size) {
-      if (size.width !== size.height) {
-        fail(`${label} must be square, it is ${size.width}x${size.height}`);
-      }
-      if (size.width < 48) {
-        fail(`${label} must be at least 48 by 48 pixels`);
-      }
-      if (size.width > 4096) {
-        fail(`${label} must be at most 4096 pixels a side`);
-      }
-    }
-    if (/\.svg$/i.test(path)) {
-      const { width, height, boxWidth, boxHeight } = svgSize(path);
-      const squareSize = width !== null && width === height && width >= 48;
-      const squareBox = boxWidth !== null && boxWidth === boxHeight && boxWidth >= 48;
-      if (!(squareSize || squareBox)) {
-        fail(`${label} needs square numeric dimensions or a square viewBox of at least 48 by 48`);
-      }
+    if (/\.png$/i.test(path)) {
+      checkPngSize(label, path);
+    } else if (/\.svg$/i.test(path)) {
+      checkSvgSize(label, path);
     }
   };
 
@@ -218,7 +251,9 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
   const checkDefaultPrompts = (value) => {
     const prompts = value === undefined ? [] : [value].flat();
     if (prompts.length > 3) {
-      fail(`interface.defaultPrompt has ${prompts.length} prompts, the limit is 3`);
+      fail(
+        `interface.defaultPrompt has ${prompts.length} prompts, the limit is 3`
+      );
     }
     if (new Set(prompts).size !== prompts.length) {
       fail("interface.defaultPrompt repeats a prompt");
@@ -235,10 +270,14 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
     const positive = review?.test_cases?.positive ?? [];
     const negative = review?.test_cases?.negative ?? [];
     if (positive.length !== 5) {
-      fail(`review needs exactly 5 positive test cases, found ${positive.length}`);
+      fail(
+        `review needs exactly 5 positive test cases, found ${positive.length}`
+      );
     }
     if (negative.length !== 3) {
-      fail(`review needs exactly 3 negative test cases, found ${negative.length}`);
+      fail(
+        `review needs exactly 3 negative test cases, found ${negative.length}`
+      );
     }
     for (const [index, testCase] of positive.entries()) {
       const label = `positive test case ${index + 1}`;
@@ -266,7 +305,9 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
   const checkManifest = (manifest) => {
     const name = typeof manifest.name === "string" ? manifest.name : "";
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name) || name.length > 64) {
-      fail("name must be lowercase letters, numbers and single hyphens, at most 64 characters");
+      fail(
+        "name must be lowercase letters, numbers and single hyphens, at most 64 characters"
+      );
     }
     checkText("version", manifest.version);
     checkText("description", manifest.description, 4000);
@@ -281,7 +322,12 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
     checkText("interface.longDescription", ui.longDescription, 4000);
     checkText("interface.developerName", ui.developerName, 80);
     checkText("interface.category", ui.category);
-    for (const key of ["websiteURL", "supportURL", "privacyPolicyURL", "termsOfServiceURL"]) {
+    for (const key of [
+      "websiteURL",
+      "supportURL",
+      "privacyPolicyURL",
+      "termsOfServiceURL",
+    ]) {
       checkHttpsUrl(`interface.${key}`, ui[key]);
     }
     if (!Array.isArray(ui.capabilities) || ui.capabilities.length > 20) {
@@ -299,11 +345,16 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
 
     const openai = manifest.extensions?.["com.openai"] ?? {};
     if (openai.interface) {
-      fail("in the Codex format, interface belongs at the top level, not under extensions");
+      fail(
+        "in the Codex format, interface belongs at the top level, not under extensions"
+      );
     }
     checkTestCases(openai.review);
     if (openai.review?.demo_recording_url !== undefined) {
-      checkHttpsUrl("review.demo_recording_url", openai.review.demo_recording_url);
+      checkHttpsUrl(
+        "review.demo_recording_url",
+        openai.review.demo_recording_url
+      );
     }
     checkText("publication.release_notes", openai.publication?.release_notes);
   };
@@ -311,7 +362,9 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
   const checkMcpConfig = (config) => {
     const servers = Object.entries(config.mcpServers ?? {});
     if (servers.length !== 1) {
-      fail(`.mcp.json must declare exactly one server, found ${servers.length}`);
+      fail(
+        `.mcp.json must declare exactly one server, found ${servers.length}`
+      );
     }
     for (const [name, server] of servers) {
       if (server.type !== "streamable-http") {
@@ -319,56 +372,85 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
       }
       checkHttpsUrl(`server ${name} url`, server.url);
       if (server.headers && Object.keys(server.headers).length > 0) {
-        fail(`server ${name} must not send headers: the directory refuses API keys and bearer tokens`);
+        fail(
+          `server ${name} must not send headers: the directory refuses API keys and bearer tokens`
+        );
       }
       const auth = server.extensions?.["com.openai"]?.auth;
       if (auth?.type !== "oauth") {
-        fail(`server ${name} must declare OAuth under extensions["com.openai"].auth`);
+        fail(
+          `server ${name} must declare OAuth under extensions["com.openai"].auth`
+        );
       }
       if (!["dcr", "cimd", "provided"].includes(auth?.client?.mode)) {
-        fail(`server ${name} must set auth.client.mode to dcr, cimd or provided`);
+        fail(
+          `server ${name} must set auth.client.mode to dcr, cimd or provided`
+        );
+      }
+    }
+  };
+
+  const checkSkillHeader = (skillDir, skill) => {
+    const path = join(skillDir, "SKILL.md");
+    if (!existsSync(path)) {
+      fail(`skills/${skill} has no SKILL.md`);
+      return;
+    }
+    const header = readFileSync(path, "utf8").match(/^---\n([\s\S]*?)\n---/);
+    if (
+      !(
+        header &&
+        /^name: \S/m.test(header[1]) &&
+        /^description: \S/m.test(header[1])
+      )
+    ) {
+      fail(
+        `skills/${skill}/SKILL.md needs name and description in its YAML header`
+      );
+    }
+  };
+
+  // Skill icons resolve from the skill folder, as in OpenAI's own plugins.
+  const checkSkillIcons = (skillDir, skill) => {
+    const agentConfig = join(skillDir, "agents/openai.yaml");
+    if (!existsSync(agentConfig)) {
+      return;
+    }
+    const icons = readFileSync(agentConfig, "utf8").matchAll(
+      /^\s*(icon_small|icon_large):\s*"?([^"\n]+?)"?\s*$/gm
+    );
+    for (const [, key, iconPath] of icons) {
+      const label = `skills/${skill}/agents/openai.yaml ${key}`;
+      if (!iconPath.startsWith("./") || iconPath.split("/").includes("..")) {
+        fail(`${label} must be a ./ path inside the skill folder`);
+      } else if (!existsSync(join(skillDir, iconPath))) {
+        fail(`${label} points to ${iconPath}, which does not exist`);
       }
     }
   };
 
   const checkSkills = () => {
     const skillsDir = join(pluginRoot, "skills");
-    const skills = existsSync(skillsDir) ? readdirSync(skillsDir) : [];
+    const skills = existsSync(skillsDir)
+      ? readdirSync(skillsDir, { withFileTypes: true })
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => entry.name)
+      : [];
     if (skills.length === 0) {
       fail("skills/ has no skill");
     }
     for (const skill of skills) {
-      const path = join(skillsDir, skill, "SKILL.md");
-      if (!existsSync(path)) {
-        fail(`skills/${skill} has no SKILL.md`);
-        continue;
-      }
-      const header = readFileSync(path, "utf8").match(/^---\n([\s\S]*?)\n---/);
-      if (!header || !/^name: \S/m.test(header[1]) || !/^description: \S/m.test(header[1])) {
-        fail(`skills/${skill}/SKILL.md needs name and description in its YAML header`);
-      }
-      const agentConfig = join(skillsDir, skill, "agents/openai.yaml");
-      if (!existsSync(agentConfig)) {
-        continue;
-      }
-      // Skill icons resolve from the skill folder, as in OpenAI's own plugins.
-      const icons = readFileSync(agentConfig, "utf8").matchAll(
-        /^\s*(icon_small|icon_large):\s*"?([^"\n]+?)"?\s*$/gm
-      );
-      for (const [, key, iconPath] of icons) {
-        const label = `skills/${skill}/agents/openai.yaml ${key}`;
-        if (!iconPath.startsWith("./") || iconPath.split("/").includes("..")) {
-          fail(`${label} must be a ./ path inside the skill folder`);
-        } else if (!existsSync(join(skillsDir, skill, iconPath))) {
-          fail(`${label} points to ${iconPath}, which does not exist`);
-        }
-      }
+      checkSkillHeader(join(skillsDir, skill), skill);
+      checkSkillIcons(join(skillsDir, skill), skill);
     }
   };
 
   const manifest = readJson(".codex-plugin/plugin.json");
   const mcpConfig = readJson(".mcp.json");
-  for (const [file, json] of [["plugin.json", manifest], [".mcp.json", mcpConfig]]) {
+  for (const [file, json] of [
+    ["plugin.json", manifest],
+    [".mcp.json", mcpConfig],
+  ]) {
     for (const key of allKeys(json)) {
       if (FORBIDDEN_KEYS.has(key)) {
         fail(`${file} must not contain "${key}"`);
@@ -391,7 +473,10 @@ export function validateCodexPlugin(pluginRoot, exposedTools) {
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const problems = validateCodexPlugin(CODEX_PLUGIN_ROOT, readExposedToolNames());
+  const problems = validateCodexPlugin(
+    CODEX_PLUGIN_ROOT,
+    readExposedToolNames()
+  );
   if (problems.length > 0) {
     console.error(`codex-plugin: ${problems.length} problem(s)`);
     for (const problem of problems) {

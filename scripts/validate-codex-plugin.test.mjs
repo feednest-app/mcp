@@ -6,7 +6,14 @@
  */
 
 import assert from "node:assert/strict";
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, test } from "node:test";
@@ -40,8 +47,10 @@ function editJson(root, relativePath, change) {
   writeFileSync(path, JSON.stringify(json, null, 2));
 }
 
-const editManifest = (root, change) => editJson(root, ".codex-plugin/plugin.json", change);
-const testCases = (manifest) => manifest.extensions["com.openai"].review.test_cases;
+const editManifest = (root, change) =>
+  editJson(root, ".codex-plugin/plugin.json", change);
+const testCases = (manifest) =>
+  manifest.extensions["com.openai"].review.test_cases;
 
 /** A PNG header with the given size: enough for the validator, which reads IHDR. */
 function pngHeader(width, height) {
@@ -69,13 +78,17 @@ test("a short description over 30 characters", () => {
       manifest.interface.shortDescription = "Search and annotate your feedss";
     })
   );
-  assert.deepEqual(problems, ["interface.shortDescription is 31 characters, the limit is 30"]);
+  assert.deepEqual(problems, [
+    "interface.shortDescription is 31 characters, the limit is 30",
+  ]);
 });
 
 test("an MCP config that sends an API key", () => {
   const problems = problemsAfter((root) =>
     editJson(root, ".mcp.json", (config) => {
-      config.mcpServers.feednest.headers = { Authorization: "Bearer ${FEEDNEST_API_KEY}" };
+      config.mcpServers.feednest.headers = {
+        Authorization: "Bearer example-key",
+      };
     })
   );
   assert.equal(problems.length, 1);
@@ -85,7 +98,7 @@ test("an MCP config that sends an API key", () => {
 test("an MCP config without OAuth", () => {
   const problems = problemsAfter((root) =>
     editJson(root, ".mcp.json", (config) => {
-      delete config.mcpServers.feednest.extensions;
+      config.mcpServers.feednest.extensions = undefined;
     })
   );
   assert.equal(problems.length, 2);
@@ -98,13 +111,16 @@ test("four positive test cases instead of five", () => {
       testCases(manifest).positive.pop();
     })
   );
-  assert.deepEqual(problems, ["review needs exactly 5 positive test cases, found 4"]);
+  assert.deepEqual(problems, [
+    "review needs exactly 5 positive test cases, found 4",
+  ]);
 });
 
 test("a test case naming a tool the server withholds or does not have", () => {
   const problems = problemsAfter((root) =>
     editManifest(root, (manifest) => {
-      testCases(manifest).positive[0].tools_triggered = "get_articles, text_to_speech, subscribe";
+      testCases(manifest).positive[0].tools_triggered =
+        "get_articles, text_to_speech, subscribe";
     })
   );
   assert.deepEqual(problems, [
@@ -116,19 +132,25 @@ test("a test case naming a tool the server withholds or does not have", () => {
 test("a positive test case without expected behavior", () => {
   const problems = problemsAfter((root) =>
     editManifest(root, (manifest) => {
-      delete testCases(manifest).positive[2].expected_behavior;
+      testCases(manifest).positive[2].expected_behavior = undefined;
     })
   );
-  assert.deepEqual(problems, ["positive test case 3 expected_behavior is required"]);
+  assert.deepEqual(problems, [
+    "positive test case 3 expected_behavior is required",
+  ]);
 });
 
 test("reviewer credentials inside the package", () => {
   const problems = problemsAfter((root) =>
     editManifest(root, (manifest) => {
-      manifest.extensions["com.openai"].review.test_credentials = { username: "x" };
+      manifest.extensions["com.openai"].review.test_credentials = {
+        username: "x",
+      };
     })
   );
-  assert.deepEqual(problems, ['plugin.json must not contain "test_credentials"']);
+  assert.deepEqual(problems, [
+    'plugin.json must not contain "test_credentials"',
+  ]);
 });
 
 test("a listing URL over plain http", () => {
@@ -153,23 +175,31 @@ test("a logo that is not square", () => {
 
 test("a hooks folder", () => {
   const problems = problemsAfter((root) => mkdirSync(join(root, "hooks")));
-  assert.deepEqual(problems, ["hooks cannot be part of a directory submission"]);
+  assert.deepEqual(problems, [
+    "hooks cannot be part of a directory submission",
+  ]);
 });
 
 test("a skill without its YAML header", () => {
   const problems = problemsAfter((root) =>
     writeFileSync(join(root, "skills/feednest/SKILL.md"), "# FeedNest\n")
   );
-  assert.deepEqual(problems, ["skills/feednest/SKILL.md needs name and description in its YAML header"]);
+  assert.deepEqual(problems, [
+    "skills/feednest/SKILL.md needs name and description in its YAML header",
+  ]);
 });
 
 test("more than three starter prompts", () => {
   const problems = problemsAfter((root) =>
     editManifest(root, (manifest) => {
-      manifest.interface.defaultPrompt.push("Highlight the key findings in this article");
+      manifest.interface.defaultPrompt.push(
+        "Highlight the key findings in this article"
+      );
     })
   );
-  assert.deepEqual(problems, ["interface.defaultPrompt has 4 prompts, the limit is 3"]);
+  assert.deepEqual(problems, [
+    "interface.defaultPrompt has 4 prompts, the limit is 3",
+  ]);
 });
 
 test("a starter prompt that mentions an app", () => {
@@ -178,7 +208,9 @@ test("a starter prompt that mentions an app", () => {
       manifest.interface.defaultPrompt[0] = "@FeedNest what's new?";
     })
   );
-  assert.deepEqual(problems, ['default prompt "@FeedNest what\'s new?" must not @mention an app']);
+  assert.deepEqual(problems, [
+    'default prompt "@FeedNest what\'s new?" must not @mention an app',
+  ]);
 });
 
 test("contrast ratios match WCAG", () => {
@@ -207,7 +239,10 @@ test("the dark brand color too dark for the dark theme", () => {
     })
   );
   assert.equal(problems.length, 1);
-  assert.match(problems[0], /^interface\.brandColorDark #333333 has 1\.\d\d:1 contrast against #212121/);
+  assert.match(
+    problems[0],
+    /^interface\.brandColorDark #333333 has 1\.\d\d:1 contrast against #212121/
+  );
 });
 
 test("an SVG icon that is not square", () => {
@@ -228,13 +263,18 @@ test("an icon path that leaves the plugin", () => {
       manifest.interface.logo = "./assets/../../logo.png";
     })
   );
-  assert.deepEqual(problems, ["interface.logo must be a ./ path inside the plugin"]);
+  assert.deepEqual(problems, [
+    "interface.logo must be a ./ path inside the plugin",
+  ]);
 });
 
 test("a skill icon outside the skill folder", () => {
   const problems = problemsAfter((root) => {
     const config = join(root, "skills/feednest/agents/openai.yaml");
-    writeFileSync(config, `${readFileSync(config, "utf8")}  icon_small: "../../assets/logo.svg"\n`);
+    writeFileSync(
+      config,
+      `${readFileSync(config, "utf8")}  icon_small: "../../assets/logo.svg"\n`
+    );
   });
   assert.deepEqual(problems, [
     "skills/feednest/agents/openai.yaml icon_small must be a ./ path inside the skill folder",
@@ -244,7 +284,8 @@ test("a skill icon outside the skill folder", () => {
 test("a demo recording link over plain http", () => {
   const problems = problemsAfter((root) =>
     editManifest(root, (manifest) => {
-      manifest.extensions["com.openai"].review.demo_recording_url = "http://example.com/demo.mp4";
+      manifest.extensions["com.openai"].review.demo_recording_url =
+        "http://example.com/demo.mp4";
     })
   );
   assert.deepEqual(problems, ["review.demo_recording_url must use https"]);
