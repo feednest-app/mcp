@@ -7,8 +7,10 @@
   ],
   "scripts": {
     "build": "npm run build -w packages/sdk && npm run build -w packages/shared-tool-defs && npm run build -w packages/openclaw-plugin",
-    "test": "npm run test -w packages/sdk && npm run test:run -w packages/shared-tool-defs && npm run test:run -w packages/openclaw-plugin",
-    "type-check": "npm run type-check -w packages/sdk && npm run type-check -w packages/shared-tool-defs && npm run type-check -w packages/openclaw-plugin"
+    "test": "npm run test -w packages/sdk && npm run test:run -w packages/shared-tool-defs && npm run test:run -w packages/openclaw-plugin && node --test scripts/validate-codex-plugin.test.mjs && npm run validate:codex-plugin",
+    "type-check": "npm run type-check -w packages/sdk && npm run type-check -w packages/shared-tool-defs && npm run type-check -w packages/openclaw-plugin",
+    "validate:codex-plugin": "node scripts/validate-codex-plugin.mjs",
+    "pack:codex-plugin": "node scripts/pack-codex-plugin.mjs"
   },
   "license": "MIT"
 }

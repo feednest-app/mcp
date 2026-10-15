@@ -1,9 +1,9 @@
 {
   "name": "feednest",
-  "version": "0.1.2",
-  "description": "Your sources inside your AI. Articles, highlights, notes, and tags from the sources you trust.",
+  "version": "0.2.0",
+  "description": "Read, search and annotate the news from the sources you follow in FeedNest: briefings, full articles, highlights, notes and tags.",
   "author": {
-    "name": "feednest-app",
+    "name": "Luca Iaconelli",
     "email": "support@feednest.com",
     "url": "https://www.feednest.com"
   },
@@ -13,34 +13,94 @@
   "keywords": [
     "news",
     "rss",
-    "ai",
+    "news-reader",
+    "feeds",
     "reading",
     "highlights",
     "notes",
-    "feeds",
-    "mcp-server",
-    "news-reader"
+    "research"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "FeedNest",
-    "shortDescription": "Your feeds inside your AI. Articles, highlights, notes, and tags.",
-    "longDescription": "ChatGPT searches the internet. Perplexity crawls billions of pages. When you ask about your industry, your interests, your world, they give you everything except what matters.\n\nFeedNest is different. Your AI works exclusively with the sources you choose: the blogs you trust, the publications you follow, the experts you believe in. No algorithmic noise. No black-box results. Intelligence grounded in your world.\n\nThis plugin gives Codex direct access to your feeds, articles, highlights, notes, and tags through 25 tools: morning briefings, trend detection, cross-source comparison, and reading stats.",
-    "developerName": "feednest-app",
+    "shortDescription": "Search and annotate your feeds",
+    "longDescription": "Your sources, not the whole web. Search, summarize and annotate your RSS feeds.\n\nFeedNest is a news reader built around the sources you choose: the blogs, publications, and experts you follow through RSS. Connect it to ChatGPT and ask about your world instead of the whole web.\n\nWhat you can do with it:\n- Get a briefing of everything new across your feeds, grouped by source or topic\n- Search every article from your sources by keyword, feed, folder, tag, or date\n- Compare how different sources covered the same story\n- Follow developing stories and spot emerging trends across your feeds\n- Read the full text of an article, even when the RSS feed only carries a summary\n- Highlight passages, add notes, and tag articles to organize your research\n- Save articles or any web page to read later\n- Check your reading history, streak, and unread counts\n\nThe plugin only accesses your own FeedNest account. Actions that change your data, such as tagging, highlighting, or marking articles as read, are labeled as writes, and deletions and bulk changes are marked as destructive.\n\nWorks on every FeedNest plan. On Free, ChatGPT can read your feeds, articles, saved articles, tags and highlights, up to 20 requests an hour. Plus and Pro add notes, reading statistics and full article text, and let ChatGPT save, tag, highlight and mark articles as read. Filtering by date needs Pro. You sign in with your FeedNest account when you connect, so there is no API key to copy.",
+    "developerName": "Luca Iaconelli",
     "category": "Productivity",
-    "capabilities": ["Read", "Write"],
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
     "websiteURL": "https://www.feednest.com",
+    "supportURL": "https://www.feednest.com/contact",
     "privacyPolicyURL": "https://www.feednest.com/privacy",
     "termsOfServiceURL": "https://www.feednest.com/terms",
     "defaultPrompt": [
-      "Give me a morning briefing from my feeds",
-      "What's happening in AI today?",
-      "Compare how different sources covered the latest story",
-      "Highlight the key findings in this article"
+      "Give me a briefing of what's new in my feeds",
+      "What have my sources published about AI this week?",
+      "Compare how different sources covered the latest story"
     ],
-    "brandColor": "#ffbf69",
-    "composerIcon": "./assets/logo.png",
+    "brandColor": "#945400",
+    "brandColorDark": "#ffbf69",
+    "composerIcon": "./assets/logo.svg",
     "logo": "./assets/logo.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Daily briefing built only from the user's own feeds.",
+              "prompt": "What's new in my feeds today? Give me a short briefing grouped by topic.",
+              "tools_triggered": "get_articles",
+              "expected_behavior": "Calls get_articles for today's articles (count_only first when there are many, then pages through them) and returns a briefing grouped by topic or source that names article titles and sources from the user's feeds, with no results from the open web."
+            },
+            {
+              "description": "Unread count and reading streak.",
+              "prompt": "How many unread articles do I have, and how is my reading streak?",
+              "tools_triggered": "get_stats",
+              "expected_behavior": "Calls get_stats and reports the number of unread articles and the current reading streak."
+            },
+            {
+              "description": "Search the user's sources for a topic.",
+              "prompt": "What have my sources published about artificial intelligence this week?",
+              "tools_triggered": "get_articles",
+              "expected_behavior": "Calls get_articles with a query for artificial intelligence and this week's date range, then lists the matching articles with title, source and date, all from the user's own feeds."
+            },
+            {
+              "description": "Read the full text of an article whose feed may carry only an excerpt.",
+              "prompt": "Find the latest article in my feeds about artificial intelligence and show me its full text.",
+              "tools_triggered": "get_articles, get_article, extract_article",
+              "expected_behavior": "Finds the article with get_articles and opens it with get_article. When the feed carries only an excerpt, calls extract_article to fetch the full text from the publisher's page, then shows or summarizes the complete article."
+            },
+            {
+              "description": "Organize an article: save it, tag it and highlight a passage.",
+              "prompt": "Find the latest article in my feeds about artificial intelligence, save it, tag it Research and highlight its first sentence.",
+              "tools_triggered": "get_articles, get_article, save_article, get_tags, create_tag, tag_article, add_highlight",
+              "expected_behavior": "Finds and opens the article, saves it, reuses the Research tag or creates it when it does not exist, tags the article, and highlights the first sentence using its exact text. Each change is a write that the user can then see in FeedNest."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Open web request. FeedNest only reads the user's own sources, so the plugin should not be used to search the web. Expected: the plugin is not used, or ChatGPT says that nothing in the user's feeds covers the request.",
+              "prompt": "Search the whole web for today's stock market news."
+            },
+            {
+              "description": "Subscription change the plugin cannot make. No tool follows or unfollows feeds. Expected: no tool call changes anything, and ChatGPT explains that subscriptions are managed in the FeedNest app.",
+              "prompt": "Unsubscribe me from all of my feeds."
+            },
+            {
+              "description": "Highlight text that does not appear in the article. Highlights must quote the article exactly. Expected: no highlight is created; add_highlight returns a clear error and ChatGPT asks for a sentence that is actually in the article.",
+              "prompt": "In my latest article, highlight the sentence 'Aliens landed in Paris yesterday'."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "First release in the ChatGPT plugin directory. Read, search and annotate the news from your FeedNest sources in ChatGPT: briefings, full articles, highlights, notes and tags. Sign-in uses OAuth with your FeedNest account, on every plan."
+      }
+    }
   }
 }

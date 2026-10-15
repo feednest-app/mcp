@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.2.0
+
+### Changed
+
+- The plugin signs in with OAuth instead of an API key. `.mcp.json` declares
+  the server as `streamable-http` with OAuth dynamic client registration, so
+  every FeedNest plan can connect and no `FEEDNEST_API_KEY` is read. Codex
+  opens the sign-in itself, or through `codex mcp login feednest`.
+- The manifest is ready for the plugin directory shared by ChatGPT and Codex:
+  a 30-character short description, the listing text used in the Claude
+  connectors directory, a support URL, the developer named as on
+  feednest.com's legal pages, three starter prompts instead of four (the
+  directory keeps at most three), and the review section with five positive
+  and three negative test cases plus release notes.
+- Brand colors follow the app: `#945400` on light surfaces, where the
+  directory asks for 2:1 contrast against white and `#ffbf69` only reaches
+  1.6:1, and `#ffbf69` as `brandColorDark`. The composer icon is the SVG logo.
+- The skill's `agents/openai.yaml` keeps only its name, description and
+  starter prompt. Its icons pointed outside the skill folder, and the MCP
+  server it declared is the one `.mcp.json` already provides.
+- The skill and the README describe what each plan allows instead of
+  requiring Pro and an API key, and no longer use em dashes.
+
+### Added
+
+- `scripts/validate-codex-plugin.mjs` checks the package against the
+  directory's limits on every `npm test`, with tests of its own, and
+  `npm run pack:codex-plugin` writes the ZIP to upload to
+  `dist/feednest-plugin-<version>.zip`.
+
 ## 0.1.2
 
 ### Changed

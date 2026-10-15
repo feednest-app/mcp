@@ -1,9 +1,17 @@
 {
   "mcpServers": {
     "feednest": {
+      "type": "streamable-http",
       "url": "https://mcp.feednest.com",
-      "headers": {
-        "Authorization": "Bearer ${FEEDNEST_API_KEY}"
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "dcr"
+            }
+          }
+        }
       }
     }
   }

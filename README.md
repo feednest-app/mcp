@@ -454,7 +454,7 @@ This repository is a monorepo containing the client libraries and plugins for th
 |---------|-----|-------------|
 | [`@feednest/sdk`](./packages/sdk) | [![npm](https://img.shields.io/npm/v/@feednest/sdk?style=flat-square)](https://www.npmjs.com/package/@feednest/sdk) | TypeScript SDK — typed HTTP client for the FeedNest API v1 |
 | [`@feednest/openclaw`](./packages/openclaw-plugin) | [![npm](https://img.shields.io/npm/v/@feednest/openclaw?style=flat-square)](https://www.npmjs.com/package/@feednest/openclaw) | OpenClaw plugin — 26 agent tools for AI assistants |
-| [Codex plugin](./packages/codex-plugin) | — | OpenAI Codex plugin — skills + MCP config for Codex agents |
+| [Codex plugin](./packages/codex-plugin) | — | Plugin for ChatGPT and Codex: skills and an MCP config that signs in with OAuth |
 | [`@feednest/shared-tool-defs`](./packages/shared-tool-defs) | private | Shared Zod schemas and text formatters (bundled into the plugin) |
 
 ### Development
@@ -462,8 +462,9 @@ This repository is a monorepo containing the client libraries and plugins for th
 ```bash
 npm install
 npm run build    # Build all packages (sdk → shared-tool-defs → openclaw-plugin)
-npm test         # Run all tests
+npm test         # Run all tests, including the Codex plugin checks
 npm run type-check
+npm run pack:codex-plugin   # ZIP of the Codex plugin for platform.openai.com/plugins
 ```
 
 ---
