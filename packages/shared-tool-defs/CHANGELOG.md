@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.4
+
+### Added
+
+- `formatArticleDetail` says when an article is only the publisher's free
+  preview of a paid article. FeedNest stores such an extraction with an empty
+  marker at the end, which the app's reader turns into a notice; the text
+  formatter drops HTML, so the article now starts with a line saying the full
+  article is on the publisher's site, for subscribers, and that extracting it
+  again gives the same preview.
+
 ## 0.1.3
 
 ### Changed

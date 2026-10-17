@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.1.3
+
+### Fixed
+
+- OpenClaw loads the plugin's skill. SKILL.md had no frontmatter, and
+  OpenClaw skips a skill without a `description`, so since 0.1.0 agents never
+  saw its guidance: how to read a truncated article, when to confirm, how to
+  build a daily recap. It now starts with `name` and `description`, and a test
+  checks every skill the manifest lists.
+
+### Changed
+
+- Bundles `@feednest/shared-tool-defs@0.1.4`:
+  - `feednest_get_article` and `feednest_extract_article` say when an article
+    is only the publisher's free preview of a paid article: the full article is
+    on the publisher's site, for subscribers, and extracting it again gives the
+    same preview.
+  - Tool descriptions only describe the tool (shared-tool-defs 0.1.3).
+    `feednest_mark_all_as_read` no longer tells the agent to ask for
+    confirmation, and `feednest_get_article` and `feednest_extract_article` no
+    longer point at each other: that guidance is in SKILL.md.
+- SKILL.md: reading an article now says not to extract a publisher's free
+  preview again.
+- README: the upgrade link points at the pricing section of feednest.com.
+- `openclaw.plugin.json` and `clawhub.json` carry the package version.
+
 ## 0.1.2
 
 ### Fixed

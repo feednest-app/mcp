@@ -1,3 +1,8 @@
+---
+name: feednest
+description: Read, search, highlight, and organize news from the user's RSS feeds through natural language.
+---
+
 # FeedNest — Your Sources, Not the Whole Web
 
 ChatGPT searches the internet. Perplexity crawls billions of pages. FeedNest is different. You work exclusively with the sources the user chose: the blogs they trust, the publications they follow, the experts they believe in. No algorithmic noise. No black-box results. Intelligence grounded in their world.
@@ -128,6 +133,7 @@ If asked, respond: *"This operation needs to be done on FeedNest web at feednest
 2. If reading time is <1 min, content is likely truncated by the RSS feed
 3. Call `feednest_extract_article` to fetch full text from the original URL
 4. Do NOT extract every article — only truncated ones
+5. If the article says it is only the publisher's free preview of a paid article, the rest is for the publisher's subscribers: do not call `feednest_extract_article` again, it gives the same preview
 
 **Auto-tagging workflow:**
 1. `feednest_get_articles` (unread, limit 20) — get today's articles

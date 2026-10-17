@@ -591,6 +591,39 @@ describe("OpenClaw Plugin", () => {
       const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
       expect(manifest.uiHints?.apiKey?.sensitive).toBe(true);
     });
+
+    it("carries the package version in both manifests", () => {
+      const read = (file: string) =>
+        JSON.parse(
+          readFileSync(resolve(import.meta.dirname, "../..", file), "utf-8")
+        );
+      const { version } = read("package.json");
+      expect(read("openclaw.plugin.json").version).toBe(version);
+      expect(read("clawhub.json").version).toBe(version);
+    });
+
+    it("gives every skill it lists the name and description OpenClaw requires", () => {
+      // OpenClaw skips a SKILL.md whose frontmatter has no description: until
+      // 0.1.3 this one had no frontmatter, and agents never saw it
+      const manifest = JSON.parse(
+        readFileSync(
+          resolve(import.meta.dirname, "../../openclaw.plugin.json"),
+          "utf-8"
+        )
+      );
+      expect(manifest.skills.length).toBeGreaterThan(0);
+      for (const skillDir of manifest.skills as string[]) {
+        const skill = readFileSync(
+          resolve(import.meta.dirname, "../..", skillDir, "SKILL.md"),
+          "utf-8"
+        );
+        const frontmatter = skill.match(/^---\n([\s\S]*?)\n---\n/)?.[1] ?? "";
+        const field = (name: string) =>
+          frontmatter.match(new RegExp(`^${name}:\\s*(.+)$`, "m"))?.[1]?.trim();
+        expect(field("name")).toBe("feednest");
+        expect(field("description")?.length).toBeGreaterThan(20);
+      }
+    });
   });
 
   describe("parity with shared-tool-defs", () => {
