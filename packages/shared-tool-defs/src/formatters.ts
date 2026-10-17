@@ -67,6 +67,25 @@ function stripHtml(html: string): string {
     .trim();
 }
 
+/**
+ * The empty element FeedNest puts at the end of a stored full article that is
+ * only the publisher's free preview of a paid article (the app's
+ * `src/lib/article-extraction/paywall-preview.ts`). The app's reader shows a
+ * notice under such a text. `stripHtml` drops the element, so an agent would
+ * read the opening as the whole article: the notice is said in words instead.
+ */
+const PAYWALL_PREVIEW_MARKER_AT_END =
+  /<p data-feednest-paywall-preview="true"><\/p>\s*$/;
+
+/** The site an article is on, as a reader names it (`bloomberg.com`) */
+function siteOf(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "the publisher's site";
+  }
+}
+
 function readingTime(seconds: number | null): string {
   if (seconds == null || seconds <= 0) {
     return "";
@@ -135,6 +154,15 @@ export function formatArticleDetail(article: ArticleDetailV1): string {
 
   const content = article.full_content ?? article.content;
   if (content) {
+    if (
+      article.full_content &&
+      PAYWALL_PREVIEW_MARKER_AT_END.test(article.full_content)
+    ) {
+      lines.push(
+        `Only the publisher's free preview of a paid article: the full article is on ${siteOf(article.url)}, for subscribers. Extracting it again gives the same preview.`
+      );
+      lines.push("");
+    }
     lines.push(stripHtml(content));
   } else {
     lines.push("(No content available — try extract_article to load from URL)");

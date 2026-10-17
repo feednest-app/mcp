@@ -201,6 +201,39 @@ describe("formatArticleDetail", () => {
     expect(result).toContain("## Note");
     expect(result).toContain("Important for project.");
   });
+
+  it("says when the full article is only the publisher's free preview", () => {
+    // The app ends a stored preview with an empty marker element, which
+    // stripHtml drops: the agent is told in words instead
+    const result = formatArticleDetail({
+      ...articleDetail,
+      url: "https://www.bloomberg.com/news/articles/2026-10-16/a-story",
+      full_content:
+        '<p>The first paragraph.</p><p>The second paragraph.</p>\n<p data-feednest-paywall-preview="true"></p>',
+    });
+    expect(result).toContain(
+      "Only the publisher's free preview of a paid article: the full article is on bloomberg.com, for subscribers."
+    );
+    expect(result).toContain("The second paragraph.");
+    expect(result).not.toContain("data-feednest-paywall-preview");
+  });
+
+  it("says nothing of a preview for a whole article or a marker not at the end", () => {
+    for (const full_content of [
+      "<p>The whole article.</p>",
+      '<p data-feednest-paywall-preview="true"></p><p>A page that wrote the marker first.</p>',
+    ]) {
+      const result = formatArticleDetail({ ...articleDetail, full_content });
+      expect(result).not.toContain("free preview");
+    }
+    // Without a full article the feed's excerpt is shown, never as a preview
+    const fromFeed = formatArticleDetail({
+      ...articleDetail,
+      content: '<p>An excerpt.</p><p data-feednest-paywall-preview="true"></p>',
+      full_content: null,
+    });
+    expect(fromFeed).not.toContain("free preview");
+  });
 });
 
 describe("formatFeedList", () => {
