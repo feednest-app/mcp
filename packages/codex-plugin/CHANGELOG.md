@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- The skill opens without naming other assistants, and its description says
+  when to use it. The Claude plugin in `packages/claude-plugin` uses the same
+  file, word for word.
+
 ## 0.2.0
 
 ### Changed

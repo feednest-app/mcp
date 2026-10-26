@@ -97,14 +97,25 @@ No API key needed, and the connector follows your Claude account to Claude Deskt
 
 To add it by URL instead, add a custom connector in **Customize → Connectors** with the URL `https://mcp.feednest.com` and leave OAuth Client ID and Secret empty.
 
-#### Claude Code
+#### Claude Code and Cowork: plugin (OAuth - recommended)
+
+The [Claude plugin](./packages/claude-plugin) brings the FeedNest server, a skill that tells Claude how to use the tools well, and the `/feednest:briefing` command. It signs in with OAuth, so it works on every FeedNest plan.
+
+```
+/plugin marketplace add feednest-app/mcp
+/plugin install feednest@feednest
+```
+
+Then run `/mcp`, pick **feednest** and sign in.
+
+#### Claude Code with an API key
 
 ```bash
 claude mcp add --transport http feednest https://mcp.feednest.com \
   --header "Authorization: Bearer fn_live_YOUR_API_KEY"
 ```
 
-Add `-s user` for global access across all projects.
+Add `-s user` for global access across all projects. API keys need FeedNest Pro.
 
 #### Claude Desktop config file (requires bridge)
 
@@ -455,6 +466,7 @@ This repository is a monorepo containing the client libraries and plugins for th
 | [`@feednest/sdk`](./packages/sdk) | [![npm](https://img.shields.io/npm/v/@feednest/sdk?style=flat-square)](https://www.npmjs.com/package/@feednest/sdk) | TypeScript SDK — typed HTTP client for the FeedNest API v1 |
 | [`@feednest/openclaw`](./packages/openclaw-plugin) | [![npm](https://img.shields.io/npm/v/@feednest/openclaw?style=flat-square)](https://www.npmjs.com/package/@feednest/openclaw) | OpenClaw plugin — 26 agent tools for AI assistants |
 | [Codex plugin](./packages/codex-plugin) | — | Plugin for ChatGPT and Codex: skills and an MCP config that signs in with OAuth |
+| [Claude plugin](./packages/claude-plugin) | — | Plugin for Claude Code and Cowork: the MCP server with OAuth, the same skill, and the `/feednest:briefing` command |
 | [`@feednest/shared-tool-defs`](./packages/shared-tool-defs) | private | Shared Zod schemas and text formatters (bundled into the plugin) |
 
 ### Development
@@ -462,7 +474,7 @@ This repository is a monorepo containing the client libraries and plugins for th
 ```bash
 npm install
 npm run build    # Build all packages (sdk → shared-tool-defs → openclaw-plugin)
-npm test         # Run all tests, including the Codex plugin checks
+npm test         # Run all tests, including the Codex and Claude plugin checks
 npm run type-check
 npm run pack:codex-plugin   # ZIP of the Codex plugin for platform.openai.com/plugins
 ```

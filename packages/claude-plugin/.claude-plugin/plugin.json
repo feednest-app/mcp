@@ -1,0 +1,20 @@
+{
+  "name": "feednest",
+  "version": "0.1.0",
+  "description": "Read, search and annotate the news from the sources you follow in FeedNest.",
+  "author": {
+    "name": "Luca Iaconelli",
+    "email": "support@feednest.com",
+    "url": "https://www.feednest.com"
+  },
+  "homepage": "https://www.feednest.com/integrations",
+  "repository": "https://github.com/feednest-app/mcp",
+  "license": "MIT",
+  "keywords": ["news", "rss", "feeds"],
+  "displayName": "FeedNest",
+  "icon": "./assets/logo.png",
+  "documentationUrl": "https://docs.feednest.com/connect/claude",
+  "supportUrl": "https://www.feednest.com/contact",
+  "privacyPolicyUrl": "https://www.feednest.com/privacy",
+  "termsOfServiceUrl": "https://www.feednest.com/terms"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "feednest",
+  "owner": {
+    "name": "FeedNest",
+    "email": "support@feednest.com",
+    "url": "https://www.feednest.com"
+  },
+  "metadata": {
+    "description": "FeedNest for Claude: read, search and annotate the news from the sources you follow."
+  },
+  "plugins": [
+    {
+      "name": "feednest",
+      "source": "./packages/claude-plugin",
+      "description": "Read, search and annotate the news from the sources you follow in FeedNest.",
+      "category": "productivity"
+    }
+  ]
+}
