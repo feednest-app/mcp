@@ -99,7 +99,7 @@ To add it by URL instead, add a custom connector in **Customize → Connectors**
 
 #### Claude Code and Cowork: plugin (OAuth - recommended)
 
-The [Claude plugin](./packages/claude-plugin) brings the FeedNest server, a skill that tells Claude how to use the tools well, and the `/feednest:briefing` command. It signs in with OAuth, so it works on every FeedNest plan.
+The [Claude plugin](./packages/claude-plugin) brings the FeedNest server, a skill that tells Claude how to use the tools well, and four commands: `/feednest:briefing`, `/feednest:research`, `/feednest:compare` and `/feednest:weekly-review`. It signs in with OAuth, so it works on every FeedNest plan.
 
 ```
 /plugin marketplace add feednest-app/mcp
@@ -466,7 +466,7 @@ This repository is a monorepo containing the client libraries and plugins for th
 | [`@feednest/sdk`](./packages/sdk) | [![npm](https://img.shields.io/npm/v/@feednest/sdk?style=flat-square)](https://www.npmjs.com/package/@feednest/sdk) | TypeScript SDK — typed HTTP client for the FeedNest API v1 |
 | [`@feednest/openclaw`](./packages/openclaw-plugin) | [![npm](https://img.shields.io/npm/v/@feednest/openclaw?style=flat-square)](https://www.npmjs.com/package/@feednest/openclaw) | OpenClaw plugin — 26 agent tools for AI assistants |
 | [Codex plugin](./packages/codex-plugin) | — | Plugin for ChatGPT and Codex: skills and an MCP config that signs in with OAuth |
-| [Claude plugin](./packages/claude-plugin) | — | Plugin for Claude Code and Cowork: the MCP server with OAuth, the same skill, and the `/feednest:briefing` command |
+| [Claude plugin](./packages/claude-plugin) | — | Plugin for Claude Code and Cowork: the MCP server with OAuth, the same skill, and four commands (briefing, research, compare, weekly review) |
 | [`@feednest/shared-tool-defs`](./packages/shared-tool-defs) | private | Shared Zod schemas and text formatters (bundled into the plugin) |
 
 ### Development

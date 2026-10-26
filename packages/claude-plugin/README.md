@@ -4,11 +4,15 @@
 
 **[FeedNest](https://www.feednest.com)** is a news reader built around the sources you choose: the blogs you trust, the publications you follow, the experts you believe in. This plugin connects Claude Code and Cowork to your FeedNest account, so Claude answers from your feeds instead of the open web.
 
-It bundles three things:
+It bundles:
 
 - **The FeedNest connection**: the remote MCP server at `https://mcp.feednest.com`, with its 25 tools for articles, feeds, folders, saved articles, highlights, notes and tags.
 - **A skill** that tells Claude which tool fits which request and how to keep the number of calls low.
-- **A command**, `/feednest:briefing`, for a briefing of what's new in your feeds, grouped by topic.
+- **Four commands**:
+  - `/feednest:briefing`: what's new in your feeds, grouped by topic;
+  - `/feednest:research <topic>`: a topic researched across your sources, every claim cited;
+  - `/feednest:compare [story]`: how different sources covered the same story;
+  - `/feednest:weekly-review`: your week of reading, and what you missed.
 
 ## Prerequisites
 
@@ -41,8 +45,10 @@ If you also connected FeedNest from Claude's connectors directory, you still get
 
 ```
 /feednest:briefing
-/feednest:briefing AI and chips
 /feednest:briefing folder Markets, last two days
+/feednest:research the EU AI Act and small companies
+/feednest:compare the latest Apple event
+/feednest:weekly-review folder Tech
 ```
 
 Or just ask: "What have my sources published about the election this week?", "Compare how my sources covered the latest Apple event", "Highlight the key passages of this article".
