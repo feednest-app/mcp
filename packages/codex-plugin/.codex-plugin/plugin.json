@@ -1,6 +1,6 @@
 {
   "name": "feednest",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Read, search and annotate the news from the sources you follow in FeedNest: briefings, full articles, highlights, notes and tags.",
   "author": {
     "name": "Luca Iaconelli",
@@ -25,7 +25,7 @@
   "interface": {
     "displayName": "FeedNest",
     "shortDescription": "Search and annotate your feeds",
-    "longDescription": "Your sources, not the whole web. Search, summarize and annotate your RSS feeds.\n\nFeedNest is a news reader built around the sources you choose: the blogs, publications, and experts you follow through RSS. Connect it to ChatGPT and ask about your world instead of the whole web.\n\nWhat you can do with it:\n- Get a briefing of everything new across your feeds, grouped by source or topic\n- Search every article from your sources by keyword, feed, folder, tag, or date\n- Compare how different sources covered the same story\n- Follow developing stories and spot emerging trends across your feeds\n- Read the full text of an article, even when the RSS feed only carries a summary\n- Highlight passages, add notes, and tag articles to organize your research\n- Save articles or any web page to read later\n- Check your reading history, streak, and unread counts\n\nThe plugin only accesses your own FeedNest account. Actions that change your data, such as tagging, highlighting, or marking articles as read, are labeled as writes, and deletions and bulk changes are marked as destructive.\n\nWorks on every FeedNest plan. On Free, ChatGPT can read your feeds, articles, saved articles, tags and highlights, up to 20 requests an hour. Plus and Pro add notes, reading statistics and full article text, and let ChatGPT save, tag, highlight and mark articles as read. Filtering by date needs Pro. You sign in with your FeedNest account when you connect, so there is no API key to copy.",
+    "longDescription": "Your sources, not the whole web. Search, summarize and annotate your RSS feeds.\n\nFeedNest is a news reader built around the sources you choose: the blogs, publications, and experts you follow through RSS. Connect it to ChatGPT and ask about your world instead of the whole web.\n\nWhat you can do with it:\n- Get a briefing of everything new across your feeds, grouped by source or topic\n- Search every article from your sources by keyword, feed, folder, tag, or date\n- Compare how different sources covered the same story\n- Follow developing stories and spot emerging trends across your feeds\n- Read the full text of an article, even when the RSS feed only carries a summary\n- Highlight passages, add notes, and tag articles to organize your research\n- Save articles or any web page to read later\n- Check your reading history, streak, and unread counts\n\nThe plugin only accesses your own FeedNest account. Actions that change your data, such as tagging, highlighting, or marking articles as read, are labeled as writes, and deletions and bulk changes are marked as destructive.\n\nYou sign in with your FeedNest account when you connect, so there is no API key to copy.",
     "developerName": "Luca Iaconelli",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
@@ -96,7 +96,7 @@
         }
       },
       "publication": {
-        "release_notes": "First release in the ChatGPT plugin directory. Read, search and annotate the news from your FeedNest sources in ChatGPT: briefings, full articles, highlights, notes and tags. Sign-in uses OAuth with your FeedNest account, on every plan."
+        "release_notes": "First release in the ChatGPT plugin directory. Read, search and annotate the news from your FeedNest sources in ChatGPT: briefings, full articles, highlights, notes and tags. Sign-in uses OAuth with your FeedNest account."
       }
     }
   }

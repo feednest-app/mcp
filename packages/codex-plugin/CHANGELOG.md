@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.2
+
+### Changed
+
+- The listing description and release notes no longer describe what each
+  FeedNest plan includes. The directory's metadata check reads that as
+  pricing ("Remove pricing, subscription offers, and temporary promotions
+  from the description"). The plans stay in the README and in the skill.
+
 ## 0.2.1
 
 ### Changed
