@@ -1,6 +1,6 @@
 {
   "name": "feednest",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Read, search and annotate the news from the sources you follow in FeedNest: briefings, full articles, highlights, notes and tags.",
   "author": {
     "name": "Luca Iaconelli",
