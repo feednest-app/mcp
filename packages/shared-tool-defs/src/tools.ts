@@ -503,7 +503,10 @@ export const tools: ToolDefinition[] = [
       article_id: z.string().describe("The article ID."),
       content: z.string().describe("Note content (text or HTML)."),
     }),
-    annotations: WRITE_IDEMPOTENT,
+    // Destructive: an article has one note, so saving over it replaces the
+    // text already there and the old note is gone. The hint lets clients
+    // confirm before overwriting it.
+    annotations: DESTRUCTIVE_IDEMPOTENT,
     invocationText: { invoking: "Saving note…", invoked: "Note saved" },
   },
   {

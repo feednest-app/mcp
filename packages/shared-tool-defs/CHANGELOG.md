@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- `add_note` is annotated destructive. An article has one note, so saving a
+  note replaces the text already there and the old note is lost. OpenAI's
+  plugin directory scan flagged the old write annotation; clients should
+  confirm before overwriting a note.
+
 ## 0.1.4
 
 ### Added

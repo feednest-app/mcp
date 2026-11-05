@@ -167,13 +167,15 @@ describe("tool definitions", () => {
     }
   });
 
-  it("only deletions and bulk read-state changes are destructive", () => {
+  it("only deletions, overwrites and bulk read-state changes are destructive", () => {
     // Asserted in both directions: a new tool that destroys data but inherits
     // a plain write preset fails here instead of skipping client confirmation.
+    // `add_note` counts as an overwrite: it replaces the article's one note.
     const destructiveNames = new Set([
       "delete_tag",
       "remove_highlight",
       "delete_note",
+      "add_note",
       "mark_all_as_read",
     ]);
     for (const tool of tools) {
@@ -213,6 +215,7 @@ describe("tool definitions", () => {
       "delete_tag",
       "remove_highlight",
       "delete_note",
+      "add_note",
       "mark_all_as_read",
     ];
     for (const name of destructiveNames) {
