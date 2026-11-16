@@ -1,7 +1,7 @@
 {
   "id": "feednest",
   "name": "FeedNest",
-  "description": "Your sources inside your AI. Articles, highlights, notes, tags, and audio from the sources you trust.",
+  "description": "The news reader your AI can read. Articles, highlights, notes, tags, and audio from the sources you trust.",
   "version": "0.1.3",
   "configSchema": {
     "type": "object",

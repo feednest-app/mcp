@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- The package description and the README describe FeedNest with its slogan,
+  "the news reader your AI can read", instead of "your curated sources".
+
 ## 0.1.1
 
 ### Fixed

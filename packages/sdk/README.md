@@ -1,6 +1,6 @@
 # @feednest/sdk
 
-TypeScript SDK for [FeedNest](https://feednest.com). Build AI integrations on top of your curated sources, not the whole web. Full types, automatic pagination, and built-in retry.
+TypeScript SDK for [FeedNest](https://feednest.com), the news reader your AI can read. Full types, automatic pagination, and built-in retry.
 
 ## Installation
 

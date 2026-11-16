@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- The package description, `openclaw.plugin.json`, `clawhub.json`, the README
+  and the opening of SKILL.md describe FeedNest with its slogan, "the news
+  reader your AI can read", and its definition, instead of "Your sources
+  inside your AI" and a comparison with other assistants.
+
 ## 0.1.3
 
 ### Fixed

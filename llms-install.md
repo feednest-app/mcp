@@ -1,6 +1,10 @@
 # Installing FeedNest in Cline
 
-FeedNest is a hosted MCP server at `https://mcp.feednest.com`. There is
+FeedNest is a news reader for the websites, blogs, podcasts and YouTube
+channels you choose. Claude, ChatGPT and other AI assistants can read it too,
+so you can ask them what's new in your sources.
+
+The FeedNest MCP server is hosted at `https://mcp.feednest.com`. There is
 nothing to clone, build or run: Cline connects to the URL.
 
 ## Option A: sign in with a FeedNest account (every plan, no API key)

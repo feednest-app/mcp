@@ -1,10 +1,8 @@
 # FeedNest MCP Server
 
-> Your sources. Not the whole web. Ask your AI about your feeds - it already knows.
+> The news reader your AI can read.
 
-ChatGPT searches the internet. Perplexity crawls billions of pages. When you ask about your industry, your interests, your world - they give you everything except what matters.
-
-**[FeedNest](https://www.feednest.com)** is different. Your AI works exclusively with the sources you choose: the blogs you trust, the publications you follow, the experts you believe in. No algorithmic noise. No black-box results. Intelligence grounded in your world.
+**[FeedNest](https://www.feednest.com)** is a news reader for the websites, blogs, podcasts and YouTube channels you choose. Claude, ChatGPT and other AI assistants can read it too, so you can ask them what's new in your sources.
 
 This MCP server gives any AI assistant - **ChatGPT**, **Codex**, **Claude**, **Gemini**, **Grok**, **Cursor**, **Windsurf**, **Cline**, **Le Chat**, and more - direct access to your feeds, articles, highlights, notes, and tags through natural language.
 

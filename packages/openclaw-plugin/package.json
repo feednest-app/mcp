@@ -1,7 +1,7 @@
 {
   "name": "@feednest/openclaw",
   "version": "0.1.3",
-  "description": "OpenClaw plugin for FeedNest. Your sources inside your AI, on WhatsApp, Telegram, Slack, and every channel you use.",
+  "description": "OpenClaw plugin for FeedNest: the news reader your AI can read, on WhatsApp, Telegram, Slack, and every channel you use.",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

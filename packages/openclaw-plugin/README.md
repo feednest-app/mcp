@@ -1,6 +1,6 @@
 # @feednest/openclaw
 
-OpenClaw plugin for [FeedNest](https://feednest.com). Your sources inside your AI, on WhatsApp, Telegram, Slack, and every channel you use. Articles, highlights, notes, tags, and audio from the sources you trust.
+OpenClaw plugin for [FeedNest](https://feednest.com): the news reader your AI can read, on WhatsApp, Telegram, Slack, and every channel you use. Articles, highlights, notes, tags, and audio from the sources you trust.
 
 ## Prerequisites
 

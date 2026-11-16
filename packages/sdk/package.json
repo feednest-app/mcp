@@ -1,7 +1,7 @@
 {
   "name": "@feednest/sdk",
   "version": "0.1.1",
-  "description": "TypeScript SDK for FeedNest. Full types, automatic pagination, and built-in retry. Build AI integrations on top of your curated sources.",
+  "description": "TypeScript SDK for FeedNest, the news reader your AI can read. Full types, automatic pagination, and built-in retry.",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
