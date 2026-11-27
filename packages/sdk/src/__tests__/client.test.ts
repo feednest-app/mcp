@@ -74,6 +74,57 @@ describe("FeedNestClient constructor", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Base URL
+// ---------------------------------------------------------------------------
+
+describe("base URL", () => {
+  async function firstRequestUrl(baseUrl?: string): Promise<string> {
+    mockFetch.mockReturnValueOnce(
+      jsonResponse({ data: [], meta: { has_more: false } })
+    );
+    const client = new FeedNestClient({ apiKey: "fn_live_test123", baseUrl });
+    await client.getFeeds();
+    return mockFetch.mock.calls[0][0] as string;
+  }
+
+  it("sends requests to https://www.feednest.com by default", async () => {
+    expect(await firstRequestUrl()).toBe(
+      "https://www.feednest.com/api/v1/feeds"
+    );
+  });
+
+  // feednest.com answers with a redirect to www, and fetch drops the
+  // Authorization header on a redirect to another origin: such a request
+  // reached the API without its key and got a 401.
+  it.each([
+    "https://feednest.com",
+    "https://feednest.com/",
+    "https://FeedNest.com",
+    "https://feednest.com:443",
+    "http://feednest.com",
+    "http://www.feednest.com",
+    "http://www.feednest.com/",
+  ])("sends a request for %s to https://www.feednest.com", async (baseUrl) => {
+    expect(await firstRequestUrl(baseUrl)).toBe(
+      "https://www.feednest.com/api/v1/feeds"
+    );
+  });
+
+  it.each([
+    ["https://www.feednest.com/", "https://www.feednest.com/api/v1/feeds"],
+    ["https://custom.example.com", "https://custom.example.com/api/v1/feeds"],
+    ["http://localhost:3000/", "http://localhost:3000/api/v1/feeds"],
+    [
+      "https://staging.feednest.com",
+      "https://staging.feednest.com/api/v1/feeds",
+    ],
+    ["https://feednest.com/proxy", "https://feednest.com/proxy/api/v1/feeds"],
+  ])("keeps the base URL %s as given", async (baseUrl, expected) => {
+    expect(await firstRequestUrl(baseUrl)).toBe(expected);
+  });
+});
+
+// ---------------------------------------------------------------------------
 // _request internals
 // ---------------------------------------------------------------------------
 
@@ -298,7 +349,7 @@ describe("article list methods", () => {
     const result = await client.getNewsfeedArticles();
 
     expect(mockFetch.mock.calls[0][0]).toBe(
-      "https://feednest.com/api/v1/articles"
+      "https://www.feednest.com/api/v1/articles"
     );
     expect(result.data).toHaveLength(1);
     expect(result.hasMore).toBe(true);
@@ -796,7 +847,7 @@ describe("structure methods (read-only)", () => {
     await client.getFeeds();
 
     expect(mockFetch.mock.calls[0][0]).toBe(
-      "https://feednest.com/api/v1/feeds"
+      "https://www.feednest.com/api/v1/feeds"
     );
   });
 

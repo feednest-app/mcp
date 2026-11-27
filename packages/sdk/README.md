@@ -37,11 +37,13 @@ for (const article of articles) {
 
 ```typescript
 const client = new FeedNestClient({
-  apiKey: "fn_live_...",       // Required
-  baseUrl: "https://feednest.com", // Optional (default)
-  timeout: 30000,              // Optional, in ms (default: 30s)
+  apiKey: "fn_live_...",               // Required
+  baseUrl: "https://www.feednest.com", // Optional (default)
+  timeout: 30000,                      // Optional, in ms (default: 30s)
 });
 ```
+
+`https://feednest.com` redirects to `https://www.feednest.com`, and a redirect to another host drops the `Authorization` header. A `baseUrl` of `https://feednest.com`, `http://feednest.com` or `http://www.feednest.com` is therefore sent to `https://www.feednest.com`. Any other `baseUrl` is used as given.
 
 ## Methods
 

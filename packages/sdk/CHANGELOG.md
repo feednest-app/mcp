@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.3
+
+### Fixed
+
+- Requests go to `https://www.feednest.com` by default instead of
+  `https://feednest.com`. The bare domain answers with a redirect to www, and
+  `fetch` drops the `Authorization` header on a redirect to another host, so a
+  call made with the default base URL reached the API without its key and
+  failed with 401 `UNAUTHORIZED` ("Bearer token required").
+- A `baseUrl` of `https://feednest.com`, `http://feednest.com` or
+  `http://www.feednest.com` is sent to `https://www.feednest.com` too, so a
+  configuration copied from the earlier README keeps working, and the key is
+  never sent over plain HTTP. Any other `baseUrl` is used as given.
+
 ## 0.1.2
 
 ### Changed

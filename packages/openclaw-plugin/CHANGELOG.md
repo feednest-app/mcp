@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.5
+
+### Fixed
+
+- Tool calls reach FeedNest with the API key. The plugin now needs
+  `@feednest/sdk@^0.1.3`, which sends requests to `https://www.feednest.com`.
+  Earlier SDK versions sent them to `https://feednest.com`, whose redirect to
+  www drops the `Authorization` header, so tool calls failed with 401
+  `UNAUTHORIZED`.
+
 ## 0.1.4
 
 ### Changed

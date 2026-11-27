@@ -38,14 +38,58 @@ import type {
 declare const __SDK_VERSION__: string;
 const SDK_VERSION =
   typeof __SDK_VERSION__ === "undefined" ? "0.0.0-dev" : __SDK_VERSION__;
-const DEFAULT_BASE_URL = "https://feednest.com";
+/** Where the FeedNest API answers: the site's canonical host, over HTTPS. */
+const DEFAULT_BASE_URL = "https://www.feednest.com";
 const DEFAULT_TIMEOUT_MS = 30_000;
+
+/**
+ * The FeedNest site's other bare addresses, as `URL` serializes them. Each
+ * answers every request with a redirect to {@link DEFAULT_BASE_URL}, and
+ * `fetch` drops the `Authorization` header when a redirect leads to another
+ * origin (scheme, host or port), so a client pointed at one of them reached
+ * the API without its key and got a 401. The plain-HTTP ones also sent the
+ * key unencrypted before the redirect.
+ */
+const REDIRECTING_SITE_ADDRESSES = new Set([
+  "https://feednest.com/",
+  "http://feednest.com/",
+  "http://www.feednest.com/",
+]);
+
+/**
+ * The base URL requests are sent to.
+ *
+ * A base URL that is one of {@link REDIRECTING_SITE_ADDRESSES} becomes
+ * {@link DEFAULT_BASE_URL}: the same service without the redirect, so a
+ * configuration copied from docs that showed `https://feednest.com` keeps
+ * working. Any other base URL (a local server, a proxy, a path) is used as
+ * given.
+ *
+ * @param baseUrl - The `baseUrl` option, if one was given
+ * @returns The base URL, without trailing slashes
+ */
+function resolveBaseUrl(baseUrl: string | undefined): string {
+  const trimmed = (baseUrl ?? DEFAULT_BASE_URL).replace(/\/+$/, "");
+  try {
+    if (REDIRECTING_SITE_ADDRESSES.has(new URL(trimmed).href)) {
+      return DEFAULT_BASE_URL;
+    }
+  } catch {
+    // Not an absolute URL: used as given, and fetch rejects it as before.
+  }
+  return trimmed;
+}
 
 /** Configuration options for the FeedNest client. */
 export interface FeedNestClientOptions {
   /** FeedNest API key (starts with `fn_live_` or `fn_test_`). */
   apiKey: string;
-  /** Base URL of the FeedNest API. Defaults to `https://feednest.com`. */
+  /**
+   * Base URL of the FeedNest API. Defaults to `https://www.feednest.com`.
+   * `https://feednest.com`, `http://feednest.com` and
+   * `http://www.feednest.com` are sent there too: they redirect to it, and
+   * following the redirect would drop the API key.
+   */
   baseUrl?: string;
   /** Request timeout in milliseconds. Defaults to 30000 (30s). */
   timeout?: number;
@@ -67,7 +111,7 @@ export class FeedNestClient {
       throw new FeedNestError("apiKey is required", "UNAUTHORIZED");
     }
     this.apiKey = options.apiKey;
-    this.baseUrl = (options.baseUrl ?? DEFAULT_BASE_URL).replace(/\/+$/, "");
+    this.baseUrl = resolveBaseUrl(options.baseUrl);
     this.timeout = options.timeout ?? DEFAULT_TIMEOUT_MS;
   }
 
